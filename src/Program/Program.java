@@ -1,3 +1,5 @@
+package Program;
+
 import GUI.GraphicalInterface;
 import GameSystem.Game;
 
@@ -18,7 +20,8 @@ public class Program
     {
         _game = new Game(new FileInputStream(args.length >=1 ? args[0] : "levels.txt"));
         _game.next();
-        System.out.println(_game.Level());
+        System.out.println(_game.currentLevel());
+
         SwingUtilities.invokeLater(new GraphicalInterface());
     }
 }

@@ -17,7 +17,7 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
         _scanner = new Scanner(stream);
     }
 
-    public Level Level()
+    public Level currentLevel()
     {
         return _currentLevel;
     }
