@@ -41,7 +41,7 @@ public class GraphicalInterface implements Runnable
         }
         catch (IOException e)
         {
-            Logger.getInstance().throwException(e, "The image " + name + "doesn't exists!", -2);
+            Logger.getInstance().throwException(e, "The image " + name + " doesn't exists!", -2);
             return null;
         }
     }
