@@ -35,8 +35,7 @@ public enum Resource
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
-            System.exit(-1);
+            Logger.getInstance().throwException(e, "The " + resourcePath + "doesn't exists!", -1);
         }
 
         return null;

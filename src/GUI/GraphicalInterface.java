@@ -1,6 +1,7 @@
 package GUI;
 
 import GameSystem.CaseContent;
+import Global.Logger;
 import Global.Resource;
 
 import javax.imageio.ImageIO;
@@ -32,31 +33,31 @@ public class GraphicalInterface implements Runnable
         return ground;
     }
 
-    public Image loadImage(String name) throws IOException
+    public Image loadImage(String name)
     {
-        return ImageIO.read(Resource.Image.open(name));
+        try
+        {
+            return ImageIO.read(Resource.Image.open(name));
+        }
+        catch (IOException e)
+        {
+            Logger.getInstance().throwException(e, "The image " + name + "doesn't exists!", -2);
+            return null;
+        }
     }
 
     public GraphicalInterface()
     {
-        try
-        {
-            ground = loadImage("Sol");
+        ground = loadImage("Sol");
 
-            images = new HashMap<>()
-            {{
-                put(CaseContent.Wall, loadImage("Mur"));
-                put(CaseContent.Goal, loadImage("But"));
-                put(CaseContent.Player, loadImage("Pousseur"));
-                put(CaseContent.Box, loadImage("Caisse"));
-                put(CaseContent.PlayerOnGoal, loadImage("Caisse_sur_but"));
-            }};
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        images = new HashMap<>()
+        {{
+            put(CaseContent.Wall, loadImage("Mur"));
+            put(CaseContent.Goal, loadImage("But"));
+            put(CaseContent.Player, loadImage("Pousseur"));
+            put(CaseContent.Box, loadImage("Caisse"));
+            put(CaseContent.PlayerOnGoal, loadImage("Caisse_sur_but"));
+        }};
     }
 
     private JFrame frame;
