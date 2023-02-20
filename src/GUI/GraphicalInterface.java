@@ -59,14 +59,25 @@ public class GraphicalInterface implements Runnable
         }
     }
 
+    private JFrame frame;
+
+    private void setFullScreen()
+    {
+        GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice()
+                .setFullScreenWindow(frame);
+    }
+
     @Override
     public void run()
     {
-        var frame = new JFrame("Sokoban 5");
+        frame = new JFrame("Sokoban 5");
         frame.add(new GraphicLevel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(1_000, 700);
         frame.setVisible(true);
+
+        //setFullScreen();
     }
 }
