@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+@Deprecated
 public class LevelWriter implements Closeable
 {
     private PrintStream _stream;

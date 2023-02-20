@@ -1,9 +1,11 @@
 package GameSystem;
 
+import java.util.Arrays;
+
 public class Level
 {
     private String _name;
-    private CaseContent[][] _cases;
+    private final CaseContent[][] _cases;
 
     public Level(int lines, int columns, String name)
     {
@@ -131,6 +133,23 @@ public class Level
     public CaseContent getCase(int l, int c)
     {
         return _cases[l][c];
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(getLines() * getColumns());
+
+        for (CaseContent[] line : _cases)
+        {
+            for (CaseContent ccase : line)
+                sb.append(ccase == null ? ' ' : ccase.Value);
+
+            sb.append("\n");
+        }
+
+        sb.append("; ").append(_name).append("\n");
+        return sb.toString();
     }
 }
 
