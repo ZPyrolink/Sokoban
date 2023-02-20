@@ -1,4 +1,4 @@
-package Program;
+package Programs;
 
 import GUI.GraphicalInterface;
 import GameSystem.Game;
@@ -18,7 +18,7 @@ public class Program
 
     public static void main(String[] args) throws FileNotFoundException
     {
-        _game = new Game(new FileInputStream(args.length >=1 ? args[0] : "levels.txt"));
+        _game = new Game(new FileInputStream(args.length >=1 ? args[0] : "res/levels.txt"));
         _game.next();
         System.out.println(_game.currentLevel());
 

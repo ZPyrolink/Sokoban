@@ -1,12 +1,12 @@
 package GUI;
 
 import GameSystem.CaseContent;
+import Global.Resource;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,24 +32,24 @@ public class GraphicalInterface implements Runnable
         return ground;
     }
 
-    private static Image load(String imgPath) throws IOException
+    public Image loadImage(String name) throws IOException
     {
-        return ImageIO.read(new FileInputStream("Images/" + imgPath + ".png"));
+        return ImageIO.read(Resource.Image.open(name));
     }
 
     public GraphicalInterface()
     {
         try
         {
-            ground = load("Sol");
+            ground = loadImage("Sol");
 
             images = new HashMap<>()
             {{
-                put(CaseContent.Wall, load("Mur"));
-                put(CaseContent.Goal, load("But"));
-                put(CaseContent.Player, load("Pousseur"));
-                put(CaseContent.Box, load("Caisse"));
-                put(CaseContent.PlayerOnGoal, load("Caisse_sur_but"));
+                put(CaseContent.Wall, loadImage("Mur"));
+                put(CaseContent.Goal, loadImage("But"));
+                put(CaseContent.Player, loadImage("Pousseur"));
+                put(CaseContent.Box, loadImage("Caisse"));
+                put(CaseContent.PlayerOnGoal, loadImage("Caisse_sur_but"));
             }};
         }
         catch (IOException e)

@@ -1,8 +1,7 @@
 package GUI;
 
-import GameSystem.CaseContent;
 import GameSystem.Level;
-import Program.Program;
+import Programs.Program;
 
 import javax.swing.*;
 import java.awt.*;
