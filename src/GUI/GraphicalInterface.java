@@ -1,7 +1,6 @@
 package GUI;
 
 import GameSystem.CaseContent;
-import Utils.Resource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +28,8 @@ public class GraphicalInterface implements Runnable
         frame.add(new GraphicLevel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(1_000, 700);
+        frame.setSize(1_216, 704 + 20);
+        frame.setResizable(false);
         frame.setVisible(true);
 
         //setFullScreen();
