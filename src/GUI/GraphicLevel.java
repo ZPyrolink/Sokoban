@@ -5,14 +5,15 @@ import GameSystem.Level;
 import Programs.Program;
 import Utils.Utils;
 import Utils.Direction;
-import com.sun.java.accessibility.util.Translator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class GraphicLevel extends JComponent implements MouseListener
+public class GraphicLevel extends JComponent implements MouseListener, KeyListener
 {
     private static final int CASE_SIZE = 128 / 2;
 
@@ -20,6 +21,9 @@ public class GraphicLevel extends JComponent implements MouseListener
     {
         super();
         addMouseListener(this);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocus();
     }
 
     private void setSize()
@@ -64,18 +68,18 @@ public class GraphicLevel extends JComponent implements MouseListener
         return new Point(event.getX() / CASE_SIZE, event.getY() / CASE_SIZE);
     }
 
-    private boolean canMove(Point newPosition)
+    private boolean canMove(Point nextCase)
     {
         Level currentLevel = Program.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
-        if (player.equals(newPosition))
+        if (player.equals(nextCase))
             return false;
 
-        if (!Utils.singleSizeMoreLess(player, newPosition, 1))
+        if (!Utils.singleSizeMoreLess(player, nextCase, 1))
             return false;
 
-        CaseContent cc = currentLevel.getCase(newPosition);
+        CaseContent cc = currentLevel.getCase(nextCase);
 
         if (cc == null)
             return true;
@@ -83,22 +87,15 @@ public class GraphicLevel extends JComponent implements MouseListener
         if (cc != CaseContent.Box)
             return false;
 
-        Direction d = Direction.getDirection(player, newPosition);
-        Point box = newPosition.getLocation();
+        Direction d = Direction.getDirection(player, nextCase);
+        Point box = nextCase.getLocation();
         box.translate(d.value.x, d.value.y);
 
         return currentLevel.getCase(box) == null;
     }
 
-    //region MouseListener implementation
-
-    @Override
-    public void mouseClicked(MouseEvent e)
+    private void move(Point nextCase)
     {
-        Point nextCase = getCaseClicked(e);
-        if (!canMove(nextCase))
-            return;
-
         Level currentLevel = Program.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
@@ -115,6 +112,18 @@ public class GraphicLevel extends JComponent implements MouseListener
         currentLevel.setCase(nextCase, CaseContent.Player);
 
         repaint();
+    }
+
+    //region MouseListener implementation
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        Point nextCase = getCaseClicked(e);
+        if (!canMove(nextCase))
+            return;
+
+        move(nextCase);
     }
 
     @Override
@@ -134,6 +143,44 @@ public class GraphicLevel extends JComponent implements MouseListener
 
     @Override
     public void mouseExited(MouseEvent e)
+    {
+    }
+
+    //endregion
+
+    //region KeyListener implementation
+
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        Direction direction = switch (e.getKeyCode())
+                {
+                    case KeyEvent.VK_UP -> Direction.Up;
+                    case KeyEvent.VK_DOWN -> Direction.Down;
+                    case KeyEvent.VK_LEFT -> Direction.Left;
+                    case KeyEvent.VK_RIGHT -> Direction.Right;
+
+                    default -> null;
+                };
+
+        if (direction == null)
+            return;
+
+
+        Point nextCase = direction.value.getLocation();
+        Utils.translate(nextCase, Program.getGame().currentLevel().playerPosition());
+        if (!canMove(nextCase))
+            return;
+        move(nextCase);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
     {
     }
 

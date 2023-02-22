@@ -22,4 +22,9 @@ public final class Utils
                 (value1.x == value2.x && moreLess(value1.y, value2.y, tolerance)) ||
                 (value1.y == value2.y && moreLess(value1.x, value2.x, tolerance));
     }
+
+    public static void translate(Point p1, Point p2)
+    {
+        p1.translate(p2.x, p2.y);
+    }
 }
