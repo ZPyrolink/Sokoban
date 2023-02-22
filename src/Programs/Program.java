@@ -2,7 +2,7 @@ package Programs;
 
 import GUI.GraphicalInterface;
 import GameSystem.Game;
-import Global.Logger;
+import Utils.Logger;
 
 import javax.swing.*;
 import java.io.FileInputStream;

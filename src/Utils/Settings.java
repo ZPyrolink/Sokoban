@@ -1,4 +1,4 @@
-package Global;
+package Utils;
 
 public final class Settings
 {

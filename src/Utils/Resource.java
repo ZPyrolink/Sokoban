@@ -1,7 +1,10 @@
-package Global;
+package Utils;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public enum Resource
@@ -39,5 +42,22 @@ public enum Resource
         }
 
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T load(Resource resource, String name)
+    {
+        try
+        {
+            return switch (resource)
+                    {
+                        case Image -> (T) ImageIO.read(Resource.Image.open(name));
+                    };
+        }
+        catch (IOException e)
+        {
+            Logger.getInstance().throwException(e, "The image " + name + " doesn't exists!", -2);
+            return null;
+        }
     }
 }

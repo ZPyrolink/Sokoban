@@ -1,4 +1,4 @@
-package Global;
+package Utils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;

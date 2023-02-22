@@ -1,5 +1,6 @@
 package GUI;
 
+import GameSystem.CaseContent;
 import GameSystem.Level;
 import Programs.Program;
 
@@ -27,11 +28,16 @@ public class GraphicLevel extends JComponent
         for (int l = 0; l < currentLevel.getLines(); l++)
             for (int c = 0; c < currentLevel.getColumns(); c++)
             {
-                drawable.drawImage(GraphicalInterface.Ground(), c * CASE_SIZE, l * CASE_SIZE,
+                drawable.drawImage(CaseContent.GroundSprite(), c * CASE_SIZE, l * CASE_SIZE,
                         CASE_SIZE, CASE_SIZE, null);
-                drawable.drawImage(GraphicalInterface.Image(currentLevel.getCase(l, c)),
-                        c * CASE_SIZE, l * CASE_SIZE,
-                        CASE_SIZE, CASE_SIZE, null);
+
+                CaseContent cc = currentLevel.getCase(l, c);
+                if (cc != null)
+                {
+                    drawable.drawImage(currentLevel.getCase(l, c).Sprite(),
+                            c * CASE_SIZE, l * CASE_SIZE,
+                            CASE_SIZE, CASE_SIZE, null);
+                }
             }
     }
 }

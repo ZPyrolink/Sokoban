@@ -4,6 +4,9 @@ import java.io.Closeable;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+/**
+ * @deprecated Use the {@link Level#toString()} method instead.
+ */
 @Deprecated
 public class LevelWriter implements Closeable
 {

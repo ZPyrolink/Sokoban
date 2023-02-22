@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @deprecated Use the {@link Game} class instead
+ */
 @Deprecated
 public class LevelReader implements Closeable
 {
