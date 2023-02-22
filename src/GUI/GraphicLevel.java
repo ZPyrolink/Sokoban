@@ -9,19 +9,17 @@ import Utils.Direction;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class GraphicLevel extends JComponent implements MouseListener, KeyListener
+public class GraphicLevel extends JComponent
 {
     private static final int CASE_SIZE = 128 / 2;
 
     public GraphicLevel()
     {
         super();
-        addMouseListener(this);
-        addKeyListener(this);
+        addMouseListener(new MouseListener());
+        addKeyListener(new KeyListener());
         setFocusable(true);
         requestFocus();
     }
@@ -114,75 +112,73 @@ public class GraphicLevel extends JComponent implements MouseListener, KeyListen
         repaint();
     }
 
-    //region MouseListener implementation
-
-    @Override
-    public void mouseClicked(MouseEvent e)
+    private class MouseListener implements java.awt.event.MouseListener
     {
-        Point nextCase = getCaseClicked(e);
-        if (!canMove(nextCase))
-            return;
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            Point nextCase = getCaseClicked(e);
+            if (!canMove(nextCase))
+                return;
 
-        move(nextCase);
+            move(nextCase);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+        }
     }
 
-    @Override
-    public void mousePressed(MouseEvent e)
+    private class KeyListener implements java.awt.event.KeyListener
     {
+        @Override
+        public void keyTyped(KeyEvent e)
+        {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e)
+        {
+            Direction direction = switch (e.getKeyCode())
+                    {
+                        case KeyEvent.VK_UP -> Direction.Up;
+                        case KeyEvent.VK_DOWN -> Direction.Down;
+                        case KeyEvent.VK_LEFT -> Direction.Left;
+                        case KeyEvent.VK_RIGHT -> Direction.Right;
+
+                        default -> null;
+                    };
+
+            if (direction == null)
+                return;
+
+
+            Point nextCase = direction.value.getLocation();
+            Utils.translate(nextCase, Program.getGame().currentLevel().playerPosition());
+            if (!canMove(nextCase))
+                return;
+            move(nextCase);
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e)
+        {
+        }
     }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e)
-    {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-    }
-
-    //endregion
-
-    //region KeyListener implementation
-
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-        Direction direction = switch (e.getKeyCode())
-                {
-                    case KeyEvent.VK_UP -> Direction.Up;
-                    case KeyEvent.VK_DOWN -> Direction.Down;
-                    case KeyEvent.VK_LEFT -> Direction.Left;
-                    case KeyEvent.VK_RIGHT -> Direction.Right;
-
-                    default -> null;
-                };
-
-        if (direction == null)
-            return;
-
-
-        Point nextCase = direction.value.getLocation();
-        Utils.translate(nextCase, Program.getGame().currentLevel().playerPosition());
-        if (!canMove(nextCase))
-            return;
-        move(nextCase);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-    }
-
-    //endregion
 }
