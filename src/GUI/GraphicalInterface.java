@@ -13,7 +13,7 @@ public class GraphicalInterface extends JFrame implements Runnable
         add(new GraphicLevel());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setSize(1_216, 704 + 20);
+        setSize(1_000, 700);
         setResizable(false);
 
         CaseContent.loadImages();

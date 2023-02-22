@@ -11,12 +11,19 @@ public class GraphicLevel extends JComponent
 {
     private static final int CASE_SIZE = 128 / 2;
 
+    private void setSize()
+    {
+        SwingUtilities.getRoot(this).setSize(
+                Program.getGame().currentLevel().getColumns() * CASE_SIZE,
+                Program.getGame().currentLevel().getLines() * CASE_SIZE + 20);
+    }
+
     @Override
     protected void paintComponent(Graphics g)
     {
         Graphics2D drawable = (Graphics2D) g;
 
-        // System.out.println(SwingUtilities.getRoot(this));
+        setSize();
 
         int width = getSize().width;
         int height = getSize().height;
