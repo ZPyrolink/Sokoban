@@ -45,11 +45,11 @@ public enum Resource
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T load(Resource resource, String name)
+    public <T> T load(String name)
     {
         try
         {
-            return switch (resource)
+            return switch (this)
                     {
                         case Image -> (T) ImageIO.read(Resource.Image.open(name));
                     };

@@ -10,7 +10,7 @@ public enum CaseContent
     Goal('.', "But"),
     Player('@', "Pousseur"),
     Box('$', "Caisse"),
-    PlayerOnGoal('*', "Caisse_sur_but");
+    BoxOnGoal('*', "Caisse_sur_but");
 
     private static Image groundSprite;
     public static Image GroundSprite()
@@ -29,9 +29,9 @@ public enum CaseContent
     public static void loadImages()
     {
         for (CaseContent cc : values())
-            cc.sprite = Resource.load(Resource.Image, cc.SpriteName);
+            cc.sprite = Resource.Image.load(cc.SpriteName);
 
-        groundSprite = Resource.load(Resource.Image, "Sol");
+        groundSprite = Resource.Image.load("Sol");
     }
 
     CaseContent(char value, String spriteName)

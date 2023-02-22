@@ -1,69 +1,16 @@
 package GameSystem;
 
-import java.util.Arrays;
+import java.awt.*;
 
 public class Level
 {
-    private String _name;
+    private final String _name;
     private final CaseContent[][] _cases;
 
     public Level(int lines, int columns, String name)
     {
         _cases = new CaseContent[lines][columns];
         _name = name;
-    }
-
-    /**
-     * permet de fixer le nom du niveau
-     */
-    public void fixeNom(String s)
-    {
-        _name = s;
-    }
-
-    /**
-     * supprime le contenu de la case à la ligne line et à la colonne column
-     */
-    public void clearCase(int line, int column)
-    {
-        _cases[line][column] = null;
-    }
-
-    /**
-     * Ajoute un mur à la position line, column
-     */
-    public void setWallAt(int line, int column)
-    {
-        _cases[line][column] = CaseContent.Wall;
-    }
-
-    /**
-     * Ajoute un pousseur à la position line, column
-     */
-    public void setPlayerAt(int line, int column)
-    {
-        _cases[line][column] = CaseContent.Player;
-    }
-
-    /**
-     * Aajoute une caisse à la position line, column
-     */
-    public void setBoxAt(int line, int column)
-    {
-        _cases[line][column] = CaseContent.Box;
-    }
-
-    /**
-     * Ajoute un but à la position line, column
-     */
-    public void setGoalAt(int line, int column)
-    {
-        _cases[line][column] = CaseContent.Goal;
-    }
-
-    public void setPlayerOnGoal(int line, int column)
-    {
-        _cases[line][column] = CaseContent.PlayerOnGoal;
     }
 
     /**
@@ -90,49 +37,47 @@ public class Level
         return _name;
     }
 
-    /**
-     * renvoie vrai si la case à la ligne line et à la colonne column est vide
-     */
-    public boolean isClear(int l, int c)
+    public void setCase(int l, int c, CaseContent value)
     {
-        return _cases[l][c] == null;
+        _cases[l][c] = value;
+    }
+
+    public void setCase(Point p, CaseContent value)
+    {
+        setCase(p.y, p.x, value);
     }
 
     /**
-     * renvoie vrai si la case à la ligne line et à la colonne column est un mur
+     * Supprime le contenu de la case à la ligne line et à la colonne column
      */
-    public boolean isWall(int l, int c)
+    public void clearCase(int line, int column)
     {
-        return _cases[l][c] == CaseContent.Wall;
+        _cases[line][column] = null;
     }
 
-    /**
-     * renvoie vrai si la case à la ligne line et à la colonne column est un but
-     */
-    public boolean isGoal(int l, int c)
+    public void clearCase(Point p)
     {
-        return _cases[l][c] == CaseContent.Goal;
-    }
-
-    /**
-     * renvoie vrai si la case à la ligne line et à la colonne column est un pousseur
-     */
-    public boolean isPlayer(int l, int c)
-    {
-        return _cases[l][c] == CaseContent.Player;
-    }
-
-    /**
-     * renvoie vrai si la case à la ligne line et à la colonne column est une caisse
-     */
-    public boolean isBox(int l, int c)
-    {
-        return _cases[l][c] == CaseContent.Box;
+        clearCase(p.y, p.x);
     }
 
     public CaseContent getCase(int l, int c)
     {
         return _cases[l][c];
+    }
+
+    public CaseContent getCase(Point p)
+    {
+        return getCase(p.y, p.x);
+    }
+
+    public Point playerPosition()
+    {
+        for (int l = 0; l < _cases.length; l++)
+            for (int c = 0; c < _cases[l].length; c++)
+                if (_cases[l][c] == CaseContent.Player)
+                    return new Point(c, l);
+
+        return null;
     }
 
     @Override
