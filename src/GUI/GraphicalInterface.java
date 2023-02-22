@@ -5,12 +5,17 @@ import GameSystem.CaseContent;
 import javax.swing.*;
 import java.awt.*;
 
-public class GraphicalInterface implements Runnable
+public class GraphicalInterface extends JFrame implements Runnable
 {
-    private JFrame frame;
-
     public GraphicalInterface()
     {
+        super("Sokoban");
+        add(new GraphicLevel());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setSize(1_216, 704 + 20);
+        setResizable(false);
+
         CaseContent.loadImages();
     }
 
@@ -18,20 +23,13 @@ public class GraphicalInterface implements Runnable
     {
         GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
-                .setFullScreenWindow(frame);
+                .setFullScreenWindow(this);
     }
 
     @Override
     public void run()
     {
-        frame = new JFrame("Sokoban 5");
-        frame.add(new GraphicLevel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setSize(1_216, 704 + 20);
-        frame.setResizable(false);
-        frame.setVisible(true);
-
+        setVisible(true);
         //setFullScreen();
     }
 }

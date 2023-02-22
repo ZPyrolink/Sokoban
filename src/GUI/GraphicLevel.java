@@ -16,10 +16,10 @@ public class GraphicLevel extends JComponent
     {
         Graphics2D drawable = (Graphics2D) g;
 
+        // System.out.println(SwingUtilities.getRoot(this));
+
         int width = getSize().width;
         int height = getSize().height;
-
-        Point center = new Point(width / 2, height / 2);
 
         drawable.clearRect(0, 0, width, height);
 
