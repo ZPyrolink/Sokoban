@@ -102,9 +102,6 @@ public class GraphicLevel extends JComponent implements MouseListener
         Level currentLevel = Program.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
-        currentLevel.clearCase(player);
-        currentLevel.setCase(nextCase, CaseContent.Player);
-
         if (currentLevel.getCase(nextCase) == CaseContent.Box)
         {
             Direction d = Direction.getDirection(player, nextCase);
@@ -113,6 +110,9 @@ public class GraphicLevel extends JComponent implements MouseListener
 
             currentLevel.setCase(box, CaseContent.Box);
         }
+
+        currentLevel.clearCase(player);
+        currentLevel.setCase(nextCase, CaseContent.Player);
 
         repaint();
     }
