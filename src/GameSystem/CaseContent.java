@@ -3,6 +3,8 @@ package GameSystem;
 import Utils.Resource;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.function.Function;
 
 public enum CaseContent
 {
@@ -10,34 +12,35 @@ public enum CaseContent
     Goal('.', "But"),
     Player('@', "Pousseur"),
     Box('$', "Caisse"),
-    BoxOnGoal('*', "Caisse_sur_but");
+    BoxOnGoal('*', "Caisse_sur_but"),
+    PlayerOnGoal('\0', "But", "Pousseur");
 
     private static Image groundSprite;
+
     public static Image GroundSprite()
     {
         return groundSprite;
     }
 
     public final char Value;
-    private final String SpriteName;
-    private Image sprite;
-    public Image Sprite()
-    {
-        return sprite;
-    }
+    private final String[] SpriteNames;
+    private Image[] sprites;
 
-    public static void loadImages()
+    public Image[] Sprite()
     {
-        for (CaseContent cc : values())
-            cc.sprite = Resource.Image.load(cc.SpriteName);
-
-        groundSprite = Resource.Image.load("Sol");
+        return sprites;
     }
 
     CaseContent(char value, String spriteName)
     {
         Value = value;
-        SpriteName = spriteName;
+        SpriteNames = new String[] { spriteName };
+    }
+
+    CaseContent(char value, String... sprites)
+    {
+        Value = value;
+        SpriteNames = sprites;
     }
 
     public static CaseContent FromValue(char value)
@@ -47,5 +50,19 @@ public enum CaseContent
                 return cc;
 
         return null;
+    }
+
+    public static void load()
+    {
+        for (CaseContent cc : values())
+        {
+            if (cc.SpriteNames.length == 0)
+                continue;
+
+            cc.sprites = Arrays.stream(cc.SpriteNames).map((Function<String, Image>) Resource.Image::load)
+                    .toArray(Image[]::new);
+        }
+
+        groundSprite = Resource.Image.load("Sol");
     }
 }

@@ -54,9 +54,9 @@ public class GraphicLevel extends JComponent
                 CaseContent cc = currentLevel.getCase(l, c);
                 if (cc != null)
                 {
-                    drawable.drawImage(currentLevel.getCase(l, c).Sprite(),
-                            c * CASE_SIZE, l * CASE_SIZE,
-                            CASE_SIZE, CASE_SIZE, null);
+                    for (Image sprite : currentLevel.getCase(l, c).Sprite())
+                        drawable.drawImage(sprite, c * CASE_SIZE, l * CASE_SIZE,
+                                CASE_SIZE, CASE_SIZE, null);
                 }
             }
     }
@@ -66,6 +66,7 @@ public class GraphicLevel extends JComponent
         return new Point(event.getX() / CASE_SIZE, event.getY() / CASE_SIZE);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canMove(Point nextCase)
     {
         Level currentLevel = Program.getGame().currentLevel();
@@ -87,6 +88,7 @@ public class GraphicLevel extends JComponent
 
         Direction d = Direction.getDirection(player, nextCase);
         Point box = nextCase.getLocation();
+        //noinspection ConstantConditions
         box.translate(d.value.x, d.value.y);
 
         cc = currentLevel.getCase(box);
@@ -103,6 +105,7 @@ public class GraphicLevel extends JComponent
         {
             Direction d = Direction.getDirection(player, nextCase);
             Point box = nextCase.getLocation();
+            //noinspection ConstantConditions
             box.translate(d.value.x, d.value.y);
 
             currentLevel.setCase(box, currentLevel.getCase(box) == null ? CaseContent.Box : CaseContent.BoxOnGoal);

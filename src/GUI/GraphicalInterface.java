@@ -16,7 +16,7 @@ public class GraphicalInterface extends JFrame implements Runnable
         setSize(1_000, 700);
         setResizable(false);
 
-        CaseContent.loadImages();
+        CaseContent.load();
     }
 
     private void setFullScreen()
