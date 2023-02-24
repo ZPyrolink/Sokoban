@@ -89,7 +89,9 @@ public class GraphicLevel extends JComponent
         Point box = nextCase.getLocation();
         box.translate(d.value.x, d.value.y);
 
-        return currentLevel.getCase(box) == null;
+        cc = currentLevel.getCase(box);
+
+        return cc == null || cc == CaseContent.Goal;
     }
 
     private void move(Point nextCase)
@@ -103,7 +105,7 @@ public class GraphicLevel extends JComponent
             Point box = nextCase.getLocation();
             box.translate(d.value.x, d.value.y);
 
-            currentLevel.setCase(box, CaseContent.Box);
+            currentLevel.setCase(box, currentLevel.getCase(box) == null ? CaseContent.Box : CaseContent.BoxOnGoal);
         }
 
         currentLevel.clearCase(player);
