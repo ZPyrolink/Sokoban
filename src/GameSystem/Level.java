@@ -1,7 +1,6 @@
 package GameSystem;
 
 import java.awt.*;
-import java.util.function.Predicate;
 
 public class Level
 {

@@ -3,15 +3,13 @@ package GUI;
 import GameSystem.CaseContent;
 import GameSystem.Game;
 import GameSystem.Level;
-import Utils.Utils;
 import Utils.Direction;
+import Utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public class GraphicLevel extends JComponent
 {
