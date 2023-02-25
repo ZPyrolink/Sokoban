@@ -3,15 +3,15 @@ package GUI;
 import GameSystem.CaseContent;
 import GameSystem.Game;
 import GameSystem.Level;
-import Programs.Program;
 import Utils.Utils;
 import Utils.Direction;
-import org.intellij.lang.annotations.MagicConstant;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class GraphicLevel extends JComponent
 {
@@ -29,8 +29,8 @@ public class GraphicLevel extends JComponent
     private void setSize()
     {
         SwingUtilities.getRoot(this).setSize(
-                Program.getGame().currentLevel().getColumns() * CASE_SIZE,
-                Program.getGame().currentLevel().getLines() * CASE_SIZE + 20);
+                Game.getGame().currentLevel().getColumns() * CASE_SIZE,
+                Game.getGame().currentLevel().getLines() * CASE_SIZE + 20);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GraphicLevel extends JComponent
 
         drawable.clearRect(0, 0, width, height);
 
-        Level currentLevel = Program.getGame().currentLevel();
+        Level currentLevel = Game.getGame().currentLevel();
 
         for (int l = 0; l < currentLevel.getLines(); l++)
             for (int c = 0; c < currentLevel.getColumns(); c++)
@@ -71,7 +71,7 @@ public class GraphicLevel extends JComponent
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canMove(Point nextCase)
     {
-        Level currentLevel = Program.getGame().currentLevel();
+        Level currentLevel = Game.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
         if (player.equals(nextCase))
@@ -107,7 +107,7 @@ public class GraphicLevel extends JComponent
 
     private void move(Point nextCase)
     {
-        Level currentLevel = Program.getGame().currentLevel();
+        Level currentLevel = Game.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
         if (CaseContent.isBox(currentLevel.getCase(nextCase)))
@@ -140,13 +140,13 @@ public class GraphicLevel extends JComponent
 
     private void checkEnd()
     {
-        if (!Program.getGame().currentLevel().finished())
+        if (!Game.getGame().currentLevel().finished())
             return;
 
         JOptionPane.showMessageDialog(this, "Leveled finished!", "Victory",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        Program.getGame().next();
+        Game.getGame().next();
         repaint();
     }
 
@@ -208,7 +208,7 @@ public class GraphicLevel extends JComponent
 
 
             Point nextCase = direction.value.getLocation();
-            Utils.translate(nextCase, Program.getGame().currentLevel().playerPosition());
+            Utils.translate(nextCase, Game.getGame().currentLevel().playerPosition());
             if (!canMove(nextCase))
                 return;
             move(nextCase);

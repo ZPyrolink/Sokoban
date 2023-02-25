@@ -8,6 +8,18 @@ import java.util.Scanner;
 
 public class Game implements Iterable<Level>, Iterator<Level>, Closeable
 {
+    private static Game game;
+
+    public static Game getGame()
+    {
+        return game;
+    }
+
+    public static void setGame(Game game)
+    {
+        Game.game = game;
+    }
+
     private final Scanner _scanner;
     private Level _currentLevel;
 
