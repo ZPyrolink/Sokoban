@@ -1,6 +1,7 @@
 package GameSystem;
 
 import java.awt.*;
+import java.util.function.Predicate;
 
 public class Level
 {
@@ -74,10 +75,20 @@ public class Level
     {
         for (int l = 0; l < _cases.length; l++)
             for (int c = 0; c < _cases[l].length; c++)
-                if (_cases[l][c] == CaseContent.Player)
+                if (CaseContent.isPlayer(_cases[l][c]))
                     return new Point(c, l);
 
         return null;
+    }
+
+    public boolean finished()
+    {
+        for (CaseContent[] aCase : _cases)
+            for (CaseContent caseContent : aCase)
+                if (caseContent == CaseContent.Goal)
+                    return false;
+
+        return true;
     }
 
     @Override

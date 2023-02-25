@@ -1,10 +1,12 @@
 package GUI;
 
 import GameSystem.CaseContent;
+import GameSystem.Game;
 import GameSystem.Level;
 import Programs.Program;
 import Utils.Utils;
 import Utils.Direction;
+import org.intellij.lang.annotations.MagicConstant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,17 +85,24 @@ public class GraphicLevel extends JComponent
         if (cc == null)
             return true;
 
-        if (cc != CaseContent.Box)
-            return false;
+        switch (cc)
+        {
+            case Goal:
+                return true;
+            case Box:
+            case BoxOnGoal:
+                Direction d = Direction.getDirection(player, nextCase);
+                Point box = nextCase.getLocation();
+                //noinspection ConstantConditions
+                box.translate(d.value.x, d.value.y);
 
-        Direction d = Direction.getDirection(player, nextCase);
-        Point box = nextCase.getLocation();
-        //noinspection ConstantConditions
-        box.translate(d.value.x, d.value.y);
+                cc = currentLevel.getCase(box);
 
-        cc = currentLevel.getCase(box);
+                return cc == null || cc == CaseContent.Goal;
 
-        return cc == null || cc == CaseContent.Goal;
+            default:
+                return false;
+        }
     }
 
     private void move(Point nextCase)
@@ -101,7 +110,7 @@ public class GraphicLevel extends JComponent
         Level currentLevel = Program.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
-        if (currentLevel.getCase(nextCase) == CaseContent.Box)
+        if (CaseContent.isBox(currentLevel.getCase(nextCase)))
         {
             Direction d = Direction.getDirection(player, nextCase);
             Point box = nextCase.getLocation();
@@ -111,9 +120,33 @@ public class GraphicLevel extends JComponent
             currentLevel.setCase(box, currentLevel.getCase(box) == null ? CaseContent.Box : CaseContent.BoxOnGoal);
         }
 
-        currentLevel.clearCase(player);
-        currentLevel.setCase(nextCase, CaseContent.Player);
+        switch (currentLevel.getCase(player))
+        {
+            case Player -> currentLevel.clearCase(player);
+            case PlayerOnGoal -> currentLevel.setCase(player, CaseContent.Goal);
+        }
 
+        CaseContent cc = currentLevel.getCase(nextCase);
+        CaseContent next = CaseContent.Player;
+
+        if (CaseContent.isGoal(cc))
+            next = CaseContent.PlayerOnGoal;
+
+        currentLevel.setCase(nextCase, next);
+
+        repaint();
+        checkEnd();
+    }
+
+    private void checkEnd()
+    {
+        if (!Program.getGame().currentLevel().finished())
+            return;
+
+        JOptionPane.showMessageDialog(this, "Leveled finished!", "Victory",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        Program.getGame().next();
         repaint();
     }
 

@@ -65,4 +65,19 @@ public enum CaseContent
 
         groundSprite = Resource.Image.load("Sol");
     }
+
+    public static boolean isPlayer(CaseContent cc)
+    {
+        return cc == Player || cc == PlayerOnGoal;
+    }
+
+    public static boolean isBox(CaseContent cc)
+    {
+        return cc == Box || cc == BoxOnGoal;
+    }
+
+    public static boolean isGoal(CaseContent cc)
+    {
+        return cc == Goal || cc == BoxOnGoal || cc == PlayerOnGoal;
+    }
 }
