@@ -1,6 +1,7 @@
-package Utils;
+package Managers;
 
 import GameSystem.Game;
+import lombok.AllArgsConstructor;
 
 import javax.imageio.ImageIO;
 import java.io.FileInputStream;
@@ -8,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+@AllArgsConstructor
 public enum Resource
 {
     Image("Images", "png"),
@@ -15,12 +17,6 @@ public enum Resource
 
     private final String path;
     private final String extension;
-
-    Resource(String path, String extension)
-    {
-        this.path = path;
-        this.extension = extension;
-    }
 
     public InputStream open(String name, String extension)
     {
@@ -40,7 +36,7 @@ public enum Resource
         }
         catch (FileNotFoundException e)
         {
-            Logger.getInstance().throwException(e, "The " + resourcePath + " doesn't exists!", -3);
+            Logger.throwException(e, "The " + resourcePath + " doesn't exists!", -3);
         }
 
         return null;
@@ -63,13 +59,13 @@ public enum Resource
                     stream.close();
                 }
                 case Game -> result = (T) new Game(stream);
-                default -> Logger.getInstance()
+                default -> Logger
                         .throwException(new RuntimeException("Error loading Resource"), 4);
             }
         }
         catch (IOException e)
         {
-            Logger.getInstance().throwException(e, "Error loading " + name + " " + this + " resource!", -2);
+            Logger.throwException(e, "Error loading " + name + " " + this + " resource!", -2);
         }
 
         return result;

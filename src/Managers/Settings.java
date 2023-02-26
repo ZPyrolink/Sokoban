@@ -1,14 +1,16 @@
-package Utils;
+package Managers;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public final class Settings
+public class Settings
 {
-    public static LogLevel logLevel = LogLevel.All;
+    public LogLevel logLevel = LogLevel.All;
 
     @EqualsAndHashCode(of = "value")
+    @AllArgsConstructor
     public static final class LogLevel
     {
         public static final LogLevel None = new LogLevel(0),
@@ -17,11 +19,6 @@ public final class Settings
                 All = new LogLevel(Integer.MAX_VALUE);
 
         private final int value;
-
-        private LogLevel(int value)
-        {
-            this.value = value;
-        }
 
         public boolean hasFlag(LogLevel flag)
         {

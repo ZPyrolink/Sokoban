@@ -1,6 +1,6 @@
 package GameSystem;
 
-import Utils.Resource;
+import Managers.Resource;
 
 import java.awt.*;
 import java.util.Arrays;

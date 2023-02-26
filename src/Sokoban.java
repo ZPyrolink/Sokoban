@@ -1,6 +1,6 @@
 import GUI.GraphicalInterface;
 import GameSystem.Game;
-import Utils.Resource;
+import Managers.Resource;
 
 import javax.swing.*;
 

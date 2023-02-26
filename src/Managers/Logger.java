@@ -1,17 +1,18 @@
-package Utils;
+package Managers;
 
-import lombok.Getter;
+import lombok.experimental.UtilityClass;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Logger
+@UtilityClass
+public class Logger
 {
-    @Getter
-    private static final Logger instance = new Logger();
-
-    private final List<PrintStream> traceListeners;
+    private final List<PrintStream> traceListeners = new ArrayList<>()
+    {{
+        add(System.out);
+    }};
 
     public void addTraceLsn(PrintStream stream)
     {
@@ -23,7 +24,10 @@ public final class Logger
         traceListeners.clear();
     }
 
-    private final List<PrintStream> errorListeners;
+    private final List<PrintStream> errorListeners = new ArrayList<>()
+    {{
+        add(System.err);
+    }};
 
     public void addErrorLsn(PrintStream stream)
     {
@@ -33,19 +37,6 @@ public final class Logger
     public void clearErrorLsn(PrintStream stream)
     {
         errorListeners.clear();
-    }
-
-    private Logger()
-    {
-        traceListeners = new ArrayList<>()
-        {{
-            add(System.out);
-        }};
-
-        errorListeners = new ArrayList<>()
-        {{
-            add(System.err);
-        }};
     }
 
     public void log(String log)
