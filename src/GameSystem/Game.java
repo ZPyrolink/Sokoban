@@ -1,5 +1,8 @@
 package GameSystem;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,17 +11,9 @@ import java.util.Scanner;
 
 public class Game implements Iterable<Level>, Iterator<Level>, Closeable
 {
+    @Getter
+    @Setter
     private static Game game;
-
-    public static Game getGame()
-    {
-        return game;
-    }
-
-    public static void setGame(Game game)
-    {
-        Game.game = game;
-    }
 
     private final Scanner _scanner;
     private Level _currentLevel;

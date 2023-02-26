@@ -1,16 +1,19 @@
 package GameSystem;
 
+import lombok.Getter;
+
 import java.awt.*;
 
 public class Level
 {
-    private final String _name;
+    @Getter
+    private final String name;
     private final CaseContent[][] _cases;
 
     public Level(int lines, int columns, String name)
     {
         _cases = new CaseContent[lines][columns];
-        _name = name;
+        this.name = name;
     }
 
     /**
@@ -27,14 +30,6 @@ public class Level
     public int getColumns()
     {
         return _cases[0].length;
-    }
-
-    /**
-     * Nom du niveau
-     */
-    public String getName()
-    {
-        return _name;
     }
 
     public void setCase(int l, int c, CaseContent value)
@@ -103,7 +98,7 @@ public class Level
             sb.append("\n");
         }
 
-        sb.append("; ").append(_name).append("\n");
+        sb.append("; ").append(name).append("\n");
         return sb.toString();
     }
 }

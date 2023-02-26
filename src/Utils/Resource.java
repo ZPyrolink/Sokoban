@@ -49,17 +49,22 @@ public enum Resource
     @SuppressWarnings("unchecked")
     public <T> T load(String name)
     {
-        try (InputStream stream = open(name))
+        T result = null;
+
+        try
         {
+            InputStream stream = open(name);
+
             switch (this)
             {
-                case Image:
-                    return (T) ImageIO.read(stream);
-                case Game:
-                    return (T) new Game(stream);
-                default:
-                    Logger.getInstance()
-                            .throwException(new RuntimeException("Error loading Resource"), 4);
+                case Image ->
+                {
+                    result = (T) ImageIO.read(open(name));
+                    stream.close();
+                }
+                case Game -> result = (T) new Game(stream);
+                default -> Logger.getInstance()
+                        .throwException(new RuntimeException("Error loading Resource"), 4);
             }
         }
         catch (IOException e)
@@ -67,6 +72,6 @@ public enum Resource
             Logger.getInstance().throwException(e, "Error loading " + name + " " + this + " resource!", -2);
         }
 
-        return null;
+        return result;
     }
 }

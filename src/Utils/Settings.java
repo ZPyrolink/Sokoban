@@ -1,9 +1,14 @@
 package Utils;
 
+import lombok.EqualsAndHashCode;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public final class Settings
 {
     public static LogLevel logLevel = LogLevel.All;
 
+    @EqualsAndHashCode(of = "value")
     public static final class LogLevel
     {
         public static final LogLevel None = new LogLevel(0),
@@ -31,19 +36,6 @@ public final class Settings
         public LogLevel removeFlag(LogLevel flag)
         {
             return new LogLevel(value & ~flag.value);
-        }
-
-        @Override
-        public boolean equals(Object o)
-        {
-            if (this == o)
-                return true;
-
-            if (o == null || getClass() != o.getClass())
-                return false;
-
-            LogLevel logLevel = (LogLevel) o;
-            return value == logLevel.value;
         }
     }
 }

@@ -1,17 +1,15 @@
 package Utils;
 
+import lombok.Getter;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Logger
 {
+    @Getter
     private static final Logger instance = new Logger();
-
-    public static Logger getInstance()
-    {
-        return instance;
-    }
 
     private final List<PrintStream> traceListeners;
 

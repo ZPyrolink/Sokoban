@@ -1,11 +1,12 @@
 package Utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.awt.*;
 
+@UtilityClass
 public final class Utils
 {
-    private Utils(){}
-
     public static boolean moreLess(int value1, int value2, int tolerance)
     {
         return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
