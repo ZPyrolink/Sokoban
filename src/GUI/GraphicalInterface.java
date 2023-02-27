@@ -17,20 +17,14 @@ public class GraphicalInterface extends JFrame implements Runnable
         setSize(1_000, 700);
         setResizable(false);
 
-        CaseContent.load();
-    }
+        setLocationRelativeTo(null);
 
-    private void setFullScreen()
-    {
-        GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice()
-                .setFullScreenWindow(this);
+        CaseContent.load();
     }
 
     @Override
     public void run()
     {
         setVisible(true);
-        //setFullScreen();
     }
 }

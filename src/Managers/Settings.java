@@ -1,13 +1,29 @@
 package Managers;
 
+import Utils.GuiUtils;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.UtilityClass;
+
+import java.awt.*;
 
 @UtilityClass
 public class Settings
 {
+    @Getter
+    @Setter
     public LogLevel logLevel = LogLevel.All;
+
+    @Getter
+    private boolean fullScreen;
+    public void setFullScreen(Window window, boolean value)
+    {
+        fullScreen = value;
+        GuiUtils.setFullScreen(value ? window : null);
+        window.setLocationRelativeTo(null);
+    }
 
     @EqualsAndHashCode(of = "value")
     @AllArgsConstructor

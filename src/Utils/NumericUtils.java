@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import java.awt.*;
 
 @UtilityClass
-public final class Utils
+public final class NumericUtils
 {
     public static boolean moreLess(int value1, int value2, int tolerance)
     {

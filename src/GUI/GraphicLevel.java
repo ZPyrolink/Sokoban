@@ -3,8 +3,10 @@ package GUI;
 import GameSystem.CaseContent;
 import GameSystem.Game;
 import GameSystem.Level;
+import Managers.Settings;
 import Utils.Direction;
-import Utils.Utils;
+import Utils.GuiUtils;
+import Utils.NumericUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,7 +77,7 @@ public class GraphicLevel extends JComponent
         if (player.equals(nextCase))
             return false;
 
-        if (!Utils.singleSizeMoreLess(player, nextCase, 1))
+        if (!NumericUtils.singleSizeMoreLess(player, nextCase, 1))
             return false;
 
         CaseContent cc = currentLevel.getCase(nextCase);
@@ -163,28 +165,30 @@ public class GraphicLevel extends JComponent
 
     private class KeyListener extends java.awt.event.KeyAdapter
     {
+        private void move(Direction d)
+        {
+            Point nextCase = d.value.getLocation();
+            NumericUtils.translate(nextCase, Game.getGame().currentLevel().playerPosition());
+            if (!canMove(nextCase))
+                return;
+
+            GraphicLevel.this.move(nextCase);
+        }
+
         @Override
         public void keyPressed(KeyEvent e)
         {
-            Direction direction = switch (e.getKeyCode())
-                    {
-                        case KeyEvent.VK_UP -> Direction.Up;
-                        case KeyEvent.VK_DOWN -> Direction.Down;
-                        case KeyEvent.VK_LEFT -> Direction.Left;
-                        case KeyEvent.VK_RIGHT -> Direction.Right;
+            switch (e.getKeyCode())
+            {
+                case KeyEvent.VK_UP -> move(Direction.Up);
+                case KeyEvent.VK_DOWN -> move(Direction.Down);
+                case KeyEvent.VK_LEFT -> move(Direction.Left);
+                case KeyEvent.VK_RIGHT -> move(Direction.Right);
 
-                        default -> null;
-                    };
-
-            if (direction == null)
-                return;
-
-
-            Point nextCase = direction.value.getLocation();
-            Utils.translate(nextCase, Game.getGame().currentLevel().playerPosition());
-            if (!canMove(nextCase))
-                return;
-            move(nextCase);
+                case KeyEvent.VK_A, KeyEvent.VK_Q -> ((Window) SwingUtilities.getRoot(GraphicLevel.this)).dispose();
+                case KeyEvent.VK_ESCAPE ->
+                        Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
+            }
         }
     }
 }
