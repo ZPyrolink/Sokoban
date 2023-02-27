@@ -148,7 +148,7 @@ public class GraphicLevel extends JComponent
         repaint();
     }
 
-    private class MouseListener implements java.awt.event.MouseListener
+    private class MouseListener extends java.awt.event.MouseAdapter
     {
         @Override
         public void mouseClicked(MouseEvent e)
@@ -159,35 +159,10 @@ public class GraphicLevel extends JComponent
 
             move(nextCase);
         }
-
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e)
-        {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e)
-        {
-        }
     }
 
-    private class KeyListener implements java.awt.event.KeyListener
+    private class KeyListener extends java.awt.event.KeyAdapter
     {
-        @Override
-        public void keyTyped(KeyEvent e)
-        {
-        }
-
         @Override
         public void keyPressed(KeyEvent e)
         {
@@ -210,11 +185,6 @@ public class GraphicLevel extends JComponent
             if (!canMove(nextCase))
                 return;
             move(nextCase);
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e)
-        {
         }
     }
 }
