@@ -18,25 +18,14 @@ public class GuiUtils
      * @param <T> Type of the cast root
      * @return the first ancestor of c that's a Window
      * @throws RuntimeException the last ancestor is an Applet
+     * @throws ClassCastException the root isn't of {@code T} type
      */
     @SuppressWarnings("unchecked")
     public <T extends Window> T getRoot(Component c)
     {
-        return (T) getWindow(c);
-    }
-
-    /**
-     * Returns the Windows component for the current component tree.
-     *
-     * @param c The component
-     * @return the first ancestor of c that's a Window or the last Applet ancestor
-     * @throws RuntimeException the last ancestor is an Applet
-     */
-    public Window getWindow(Component c)
-    {
         Component result = SwingUtilities.getRoot(c);
         if (result instanceof Window w)
-            return w;
+            return (T) w;
 
         throw new RuntimeException();
     }
