@@ -13,7 +13,7 @@ public enum CaseContent
     Player('@', "Pousseur"),
     Box('$', "Caisse"),
     BoxOnGoal('*', "Caisse_sur_but"),
-    PlayerOnGoal('\0', "But", "Pousseur");
+    PlayerOnGoal('+', "But", "Pousseur");
 
     private static Image groundSprite;
 
