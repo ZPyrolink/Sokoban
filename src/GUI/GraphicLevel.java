@@ -110,7 +110,7 @@ public class GraphicLevel extends JComponent
         Level currentLevel = Game.getGame().currentLevel();
         Point player = currentLevel.playerPosition();
 
-        if (CaseContent.isBox(currentLevel.getCase(nextCase)))
+        if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
         {
             Direction d = Direction.getDirection(player, nextCase);
             Point box = nextCase.getLocation();
@@ -129,7 +129,7 @@ public class GraphicLevel extends JComponent
         CaseContent cc = currentLevel.getCase(nextCase);
         CaseContent next = CaseContent.Player;
 
-        if (CaseContent.isGoal(cc))
+        if (CaseContent.haveGoal(cc))
             next = CaseContent.PlayerOnGoal;
 
         currentLevel.setCase(nextCase, next);

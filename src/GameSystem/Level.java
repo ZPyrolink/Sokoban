@@ -69,7 +69,7 @@ public class Level
     {
         for (int l = 0; l < _cases.length; l++)
             for (int c = 0; c < _cases[l].length; c++)
-                if (CaseContent.isPlayer(_cases[l][c]))
+                if (CaseContent.havePlayer(_cases[l][c]))
                     return new Point(c, l);
 
         return null;
