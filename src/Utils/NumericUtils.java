@@ -4,26 +4,59 @@ import lombok.experimental.UtilityClass;
 
 import java.awt.*;
 
+/**
+ * Utility class for numeric values
+ */
 @UtilityClass
 public final class NumericUtils
 {
-    public static boolean moreLess(int value1, int value2, int tolerance)
+    /**
+     * &plusmn between two values
+     *
+     * @param value     Value to check
+     * @param comparer  Left value of the &plusmn tolerance
+     * @param tolerance Right value of the &plusmn tolerance
+     * @return {@code value} &isin {@code comparer} &plusmn {@code tolerance}
+     */
+    public static boolean moreLess(int value, int comparer, int tolerance)
     {
-        return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
+        return value >= comparer - tolerance && value <= comparer + tolerance;
     }
 
-    public static boolean moreLess(Point value1, Point value2, int tolerance)
+    /**
+     * &plusmn between two coordinates
+     *
+     * @param value     Value to check
+     * @param comparer  Left value of the &plusmn tolerance
+     * @param tolerance Right value of the &plusmn tolerance
+     * @return {@code value} &isin {@code comparer} &plusmn {@code tolerance}
+     */
+    public static boolean moreLess(Point value, Point comparer, int tolerance)
     {
-        return moreLess(value1.x, value2.x, tolerance) && moreLess(value1.y, value2.y, tolerance);
+        return moreLess(value.x, comparer.x, tolerance) && moreLess(value.y, comparer.y, tolerance);
     }
 
-    public static boolean singleSizeMoreLess(Point value1, Point value2, int tolerance)
+    /**
+     * &plusmn between two coordinates on one axis
+     *
+     * @param value     Value to check
+     * @param comparer  Left value of the &plusmn tolerance
+     * @param tolerance Right value of the &plusmn tolerance
+     * @return {@code value} &isin {@code comparer} &plusmn {@code tolerance}
+     */
+    public static boolean singleAxisMoreLess(Point value, Point comparer, int tolerance)
     {
-        return value1.equals(value2) ||
-                (value1.x == value2.x && moreLess(value1.y, value2.y, tolerance)) ||
-                (value1.y == value2.y && moreLess(value1.x, value2.x, tolerance));
+        return value.equals(comparer) ||
+                (value.x == comparer.x && moreLess(value.y, comparer.y, tolerance)) ||
+                (value.y == comparer.y && moreLess(value.x, comparer.x, tolerance));
     }
 
+    /**
+     * Translates a point
+     *
+     * @param p1 Point to move
+     * @param p2 The distance to move this point
+     */
     public static void translate(Point p1, Point p2)
     {
         p1.translate(p2.x, p2.y);

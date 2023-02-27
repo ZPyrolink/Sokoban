@@ -77,7 +77,7 @@ public class GraphicLevel extends JComponent
         if (player.equals(nextCase))
             return false;
 
-        if (!NumericUtils.singleSizeMoreLess(player, nextCase, 1))
+        if (!NumericUtils.singleAxisMoreLess(player, nextCase, 1))
             return false;
 
         CaseContent cc = currentLevel.getCase(nextCase);
