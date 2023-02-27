@@ -85,7 +85,7 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
 
             for (int c = 0; c < line.length(); c++)
             {
-                CaseContent cc = CaseContent.FromValue(line.charAt(c));
+                CaseContent cc = CaseContent.of(line.charAt(c));
                 if (cc == null)
                     _currentLevel.clearCase(l, c);
                 else

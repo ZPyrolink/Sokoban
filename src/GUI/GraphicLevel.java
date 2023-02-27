@@ -48,13 +48,13 @@ public class GraphicLevel extends JComponent
         for (int l = 0; l < currentLevel.getLines(); l++)
             for (int c = 0; c < currentLevel.getColumns(); c++)
             {
-                drawable.drawImage(CaseContent.GroundSprite(), c * CASE_SIZE, l * CASE_SIZE,
+                drawable.drawImage(CaseContent.getGroundSprite(), c * CASE_SIZE, l * CASE_SIZE,
                         CASE_SIZE, CASE_SIZE, null);
 
                 CaseContent cc = currentLevel.getCase(l, c);
                 if (cc != null)
                 {
-                    for (Image sprite : currentLevel.getCase(l, c).Sprite())
+                    for (Image sprite : currentLevel.getCase(l, c).getSprites())
                         drawable.drawImage(sprite, c * CASE_SIZE, l * CASE_SIZE,
                                 CASE_SIZE, CASE_SIZE, null);
                 }

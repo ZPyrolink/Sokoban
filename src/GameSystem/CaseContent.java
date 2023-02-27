@@ -1,6 +1,7 @@
 package GameSystem;
 
 import Managers.Resource;
+import lombok.Getter;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -15,21 +16,13 @@ public enum CaseContent
     BoxOnGoal('*', "Caisse_sur_but"),
     PlayerOnGoal('+', "But", "Pousseur");
 
+    @Getter
     private static Image groundSprite;
-
-    public static Image GroundSprite()
-    {
-        return groundSprite;
-    }
 
     public final char Value;
     private final String[] SpriteNames;
+    @Getter
     private Image[] sprites;
-
-    public Image[] Sprite()
-    {
-        return sprites;
-    }
 
     CaseContent(char value, String spriteName)
     {
@@ -43,7 +36,7 @@ public enum CaseContent
         SpriteNames = sprites;
     }
 
-    public static CaseContent FromValue(char value)
+    public static CaseContent of(char value)
     {
         for (CaseContent cc : values())
             if (cc.Value == value)
@@ -59,7 +52,8 @@ public enum CaseContent
             if (cc.SpriteNames.length == 0)
                 continue;
 
-            cc.sprites = Arrays.stream(cc.SpriteNames).map((Function<String, Image>) Resource.Image::load)
+            cc.sprites = Arrays.stream(cc.SpriteNames)
+                    .map((Function<String, Image>) Resource.Image::load)
                     .toArray(Image[]::new);
         }
 
