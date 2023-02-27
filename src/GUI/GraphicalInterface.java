@@ -5,18 +5,37 @@ import GameSystem.Game;
 
 import javax.swing.*;
 
+/**
+ * Represent the Sokoban Frame
+ */
 public class GraphicalInterface extends JFrame implements Runnable
 {
+    /**
+     * Default width of the frame
+     */
+    private static final int DEFAULT_WIDTH = 1_000;
+    /**
+     * Default height of the frame
+     */
+    private static final int DEFAULT_HEIGHT = 700;
+
+    /**
+     * Instantiate the interface.
+     * <ul>
+     *     <li>Set the name with the {@link GameSystem.Level#name} of {@link Game#game}</li>
+     *     <li>Instantiate the {@link GraphicLevel}</li>
+     *     <li>Use {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT} on {@link #setSize(int, int)} and disable resize</li>
+     *     <li>{@link CaseContent#load()}</li>
+     * </ul>
+     */
     public GraphicalInterface()
     {
         super(Game.getGame().getCurrentLevel().getName());
         add(new GraphicLevel());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setSize(1_000, 700);
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setResizable(false);
-
-        setLocationRelativeTo(null);
 
         CaseContent.load();
     }
