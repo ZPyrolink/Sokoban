@@ -91,7 +91,7 @@ public class GraphicLevel extends JComponent
                 return true;
             case Box:
             case BoxOnGoal:
-                Direction d = Direction.getDirection(player, nextCase);
+                Direction d = Direction.of(player, nextCase);
                 Point box = nextCase.getLocation();
                 //noinspection ConstantConditions
                 box.translate(d.value.x, d.value.y);
@@ -112,7 +112,7 @@ public class GraphicLevel extends JComponent
 
         if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
         {
-            Direction d = Direction.getDirection(player, nextCase);
+            Direction d = Direction.of(player, nextCase);
             Point box = nextCase.getLocation();
             //noinspection ConstantConditions
             box.translate(d.value.x, d.value.y);
