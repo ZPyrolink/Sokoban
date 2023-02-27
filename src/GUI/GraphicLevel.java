@@ -72,7 +72,7 @@ public class GraphicLevel extends JComponent
     private boolean canMove(Point nextCase)
     {
         Level currentLevel = Game.getGame().getCurrentLevel();
-        Point player = currentLevel.playerPosition();
+        Point player = currentLevel.getPlayerCo();
 
         if (player.equals(nextCase))
             return false;
@@ -108,7 +108,7 @@ public class GraphicLevel extends JComponent
     private void move(Point nextCase)
     {
         Level currentLevel = Game.getGame().getCurrentLevel();
-        Point player = currentLevel.playerPosition();
+        Point player = currentLevel.getPlayerCo();
 
         if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
         {
@@ -140,7 +140,7 @@ public class GraphicLevel extends JComponent
 
     private void checkEnd()
     {
-        if (!Game.getGame().getCurrentLevel().finished())
+        if (!Game.getGame().getCurrentLevel().isFinished())
             return;
 
         JOptionPane.showMessageDialog(this, "Leveled finished!", "Victory",
@@ -168,7 +168,7 @@ public class GraphicLevel extends JComponent
         private void move(Direction d)
         {
             Point nextCase = d.value.getLocation();
-            NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().playerPosition());
+            NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().getPlayerCo());
             if (!canMove(nextCase))
                 return;
 
