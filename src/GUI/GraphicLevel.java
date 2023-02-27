@@ -13,10 +13,23 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+/**
+ * Represent a GUI level
+ */
 public class GraphicLevel extends JComponent
 {
+    /**
+     * Default size of a case
+     */
     private static final int CASE_SIZE = 128 / 2;
 
+    /**
+     * Instantiate a GUI level.
+     * <ul>
+     *     <li>Add {@link MouseListener} and {@link KeyListener}</li>
+     *     <li>{@link #requestFocus()}</li>
+     * </ul>
+     */
     public GraphicLevel()
     {
         super();
@@ -26,9 +39,12 @@ public class GraphicLevel extends JComponent
         requestFocus();
     }
 
+    /**
+     * Set the size with the {@link Level#getColumns()} and {@link Level#getLines()} of {@link Game#game}
+     */
     private void setSize()
     {
-        SwingUtilities.getRoot(this).setSize(
+        GuiUtils.getRoot(this).setSize(
                 Game.getGame().getCurrentLevel().getColumns() * CASE_SIZE,
                 Game.getGame().getCurrentLevel().getLines() * CASE_SIZE + 20);
     }
@@ -63,11 +79,17 @@ public class GraphicLevel extends JComponent
             }
     }
 
+    /**
+     * Get the case coordinates where a mouse event have occured
+     */
     private Point getCaseClicked(MouseEvent event)
     {
         return new Point(event.getX() / CASE_SIZE, event.getY() / CASE_SIZE);
     }
 
+    /**
+     * Check if the {@link CaseContent#Player} can move on another case
+     */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canMove(Point nextCase)
     {
@@ -105,6 +127,9 @@ public class GraphicLevel extends JComponent
         }
     }
 
+    /**
+     * Move the {@link CaseContent#Player} on the another case
+     */
     private void move(Point nextCase)
     {
         Level currentLevel = Game.getGame().getCurrentLevel();
@@ -138,6 +163,9 @@ public class GraphicLevel extends JComponent
         checkEnd();
     }
 
+    /**
+     * Check if the {@link Level#isFinished()} and go to the next
+     */
     private void checkEnd()
     {
         if (!Game.getGame().getCurrentLevel().isFinished())
@@ -150,6 +178,9 @@ public class GraphicLevel extends JComponent
         repaint();
     }
 
+    /**
+     * Mouse listener to move player on click
+     */
     private class MouseListener extends java.awt.event.MouseAdapter
     {
         @Override
@@ -163,8 +194,18 @@ public class GraphicLevel extends JComponent
         }
     }
 
+    /**
+     * Key listener.
+     * <ul>
+     *     <li>Move on direction keys</li>
+     *     <li></li>
+     * </ul>
+     */
     private class KeyListener extends java.awt.event.KeyAdapter
     {
+        /**
+         * Move the {@link CaseContent#Player} on a {@link Direction}
+         */
         private void move(Direction d)
         {
             Point nextCase = d.value.getLocation();
@@ -175,18 +216,44 @@ public class GraphicLevel extends JComponent
             GraphicLevel.this.move(nextCase);
         }
 
+        /**
+         * Key to move up
+         */
+        private static final int UP = KeyEvent.VK_UP;
+        /**
+         * Key to move down
+         */
+        private static final int DOWN = KeyEvent.VK_DOWN;
+        /**
+         * Key to move left
+         */
+        private static final int LEFT = KeyEvent.VK_LEFT;
+        /**
+         * Key to move right
+         */
+        private static final int RIGHT = KeyEvent.VK_RIGHT;
+
+        /**
+         * Key to exit the app
+         */
+        private static final int EXIT = KeyEvent.VK_Q;
+        /**
+         * Key to toggle full screen
+         */
+        private static final int FULL_SCREEN = KeyEvent.VK_ESCAPE;
+
         @Override
         public void keyPressed(KeyEvent e)
         {
             switch (e.getKeyCode())
             {
-                case KeyEvent.VK_UP -> move(Direction.Up);
-                case KeyEvent.VK_DOWN -> move(Direction.Down);
-                case KeyEvent.VK_LEFT -> move(Direction.Left);
-                case KeyEvent.VK_RIGHT -> move(Direction.Right);
+                case UP -> move(Direction.Up);
+                case DOWN -> move(Direction.Down);
+                case LEFT -> move(Direction.Left);
+                case RIGHT -> move(Direction.Right);
 
-                case KeyEvent.VK_A, KeyEvent.VK_Q -> ((Window) SwingUtilities.getRoot(GraphicLevel.this)).dispose();
-                case KeyEvent.VK_ESCAPE ->
+                case EXIT -> ((Window) SwingUtilities.getRoot(GraphicLevel.this)).dispose();
+                case FULL_SCREEN ->
                         Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
             }
         }
