@@ -9,25 +9,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
+/** Represent a Sokoban game */
 public class Game implements Iterable<Level>, Iterator<Level>, Closeable
 {
+    /** Static instance of a game */
     @Getter
     @Setter
     private static Game game;
 
+    /** Scanner reading a file game */
     private final Scanner _scanner;
-    private Level _currentLevel;
+    /** Current level */
+    @Getter
+    private Level currentLevel;
 
+    /**
+     * Create a new game
+     * @param stream Stream where the levels are readed
+     */
     public Game(InputStream stream)
     {
-        _currentLevel = null;
+        currentLevel = null;
         _scanner = new Scanner(stream);
     }
 
-    public Level currentLevel()
-    {
-        return _currentLevel;
-    }
+    //region Iterator / Iterable
 
     @Override
     public Iterator<Level> iterator()
@@ -77,7 +83,7 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
             lines.remove(comment);
         }
 
-        _currentLevel = new Level(linesNb, columnsNb, levelName);
+        currentLevel = new Level(linesNb, columnsNb, levelName);
 
         for (int l = 0; l < lines.size(); l++)
         {
@@ -87,13 +93,13 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
             {
                 CaseContent cc = CaseContent.of(line.charAt(c));
                 if (cc == null)
-                    _currentLevel.clearCase(l, c);
+                    currentLevel.clearCase(l, c);
                 else
-                    _currentLevel.setCase(l, c, cc);
+                    currentLevel.setCase(l, c, cc);
             }
         }
 
-        return _currentLevel;
+        return currentLevel;
     }
 
     @Override
@@ -101,4 +107,6 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
     {
         _scanner.close();
     }
+
+    //endregion
 }

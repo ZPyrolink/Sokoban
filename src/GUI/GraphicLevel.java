@@ -29,8 +29,8 @@ public class GraphicLevel extends JComponent
     private void setSize()
     {
         SwingUtilities.getRoot(this).setSize(
-                Game.getGame().currentLevel().getColumns() * CASE_SIZE,
-                Game.getGame().currentLevel().getLines() * CASE_SIZE + 20);
+                Game.getGame().getCurrentLevel().getColumns() * CASE_SIZE,
+                Game.getGame().getCurrentLevel().getLines() * CASE_SIZE + 20);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GraphicLevel extends JComponent
 
         drawable.clearRect(0, 0, width, height);
 
-        Level currentLevel = Game.getGame().currentLevel();
+        Level currentLevel = Game.getGame().getCurrentLevel();
 
         for (int l = 0; l < currentLevel.getLines(); l++)
             for (int c = 0; c < currentLevel.getColumns(); c++)
@@ -71,7 +71,7 @@ public class GraphicLevel extends JComponent
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canMove(Point nextCase)
     {
-        Level currentLevel = Game.getGame().currentLevel();
+        Level currentLevel = Game.getGame().getCurrentLevel();
         Point player = currentLevel.playerPosition();
 
         if (player.equals(nextCase))
@@ -107,7 +107,7 @@ public class GraphicLevel extends JComponent
 
     private void move(Point nextCase)
     {
-        Level currentLevel = Game.getGame().currentLevel();
+        Level currentLevel = Game.getGame().getCurrentLevel();
         Point player = currentLevel.playerPosition();
 
         if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
@@ -140,7 +140,7 @@ public class GraphicLevel extends JComponent
 
     private void checkEnd()
     {
-        if (!Game.getGame().currentLevel().finished())
+        if (!Game.getGame().getCurrentLevel().finished())
             return;
 
         JOptionPane.showMessageDialog(this, "Leveled finished!", "Victory",
@@ -168,7 +168,7 @@ public class GraphicLevel extends JComponent
         private void move(Direction d)
         {
             Point nextCase = d.value.getLocation();
-            NumericUtils.translate(nextCase, Game.getGame().currentLevel().playerPosition());
+            NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().playerPosition());
             if (!canMove(nextCase))
                 return;
 
