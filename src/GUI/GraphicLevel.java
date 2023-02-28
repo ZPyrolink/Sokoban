@@ -23,6 +23,16 @@ public class GraphicLevel extends JComponent
      */
     private static final int CASE_SIZE = 128 / 2;
 
+    private static final String PLACEHOLDER = "%nb% moves";
+
+    private JLabel labelMoveNb;
+    private int moveNb;
+    private void updateLabelMoveNb()
+    {
+        labelMoveNb.setText(PLACEHOLDER.replace("%nb%", String.valueOf(moveNb)));
+        labelMoveNb.setSize(labelMoveNb.getPreferredSize());
+    }
+
     /**
      * Instantiate a GUI level.
      * <ul>
@@ -37,6 +47,15 @@ public class GraphicLevel extends JComponent
         addKeyListener(new KeyListener());
         setFocusable(true);
         requestFocus();
+
+        moveNb = 0;
+
+        labelMoveNb = new JLabel();
+        Font tmp = labelMoveNb.getFont();
+        labelMoveNb.setFont(new Font(tmp.getName(), tmp.getStyle(), 20));
+        add(labelMoveNb);
+
+        updateLabelMoveNb();
     }
 
     /**
@@ -158,6 +177,9 @@ public class GraphicLevel extends JComponent
             next = CaseContent.PlayerOnGoal;
 
         currentLevel.setCase(nextCase, next);
+
+        moveNb++;
+        updateLabelMoveNb();
 
         repaint();
         checkEnd();

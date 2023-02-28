@@ -11,7 +11,6 @@ public class Sokoban
         String levelsName = args.length >= 1 ? args[0] : "originals";
         Game.setGame(new Game(Resource.Game.open(levelsName)));
         Game.getGame().next();
-        System.out.println(Game.getGame().getCurrentLevel());
 
         SwingUtilities.invokeLater(new GraphicalInterface());
     }
