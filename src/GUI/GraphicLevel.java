@@ -171,11 +171,20 @@ public class GraphicLevel extends JComponent
         if (!Game.getGame().getCurrentLevel().isFinished())
             return;
 
-        JOptionPane.showMessageDialog(this, "Leveled finished!", "Victory",
+        JOptionPane.showMessageDialog(this, "Level finished!", "Victory",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        Game.getGame().next();
-        repaint();
+        if (Game.getGame().hasNext())
+        {
+            Game.getGame().next();
+            repaint();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Game finished!", "VICTORY",
+                    JOptionPane.INFORMATION_MESSAGE);
+            GuiUtils.getRoot(GraphicLevel.this).dispose();
+        }
     }
 
     /**
@@ -256,7 +265,7 @@ public class GraphicLevel extends JComponent
                 case LEFT -> move(Direction.Left);
                 case RIGHT -> move(Direction.Right);
 
-                case EXIT -> ((Window) SwingUtilities.getRoot(GraphicLevel.this)).dispose();
+                case EXIT -> GuiUtils.getRoot(GraphicLevel.this).dispose();
                 case FULL_SCREEN ->
                         Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
             }
