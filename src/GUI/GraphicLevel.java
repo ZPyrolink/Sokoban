@@ -40,7 +40,7 @@ public class GraphicLevel extends JComponent
     }
 
     /**
-     * Set the size with the {@link Level#getColumns()} and {@link Level#getLines()} of {@link Game#game}
+     * Set the size with the {@link Level#getColumns()} and {@link Level#getLines()} of {@link Game#getGame()}
      */
     private void setSize()
     {
@@ -197,8 +197,12 @@ public class GraphicLevel extends JComponent
     /**
      * Key listener.
      * <ul>
-     *     <li>Move on direction keys</li>
-     *     <li></li>
+     *     <li>
+     *         Move on {@link KeyListener#UP}, {@link KeyListener#DOWN},
+     *         {@link KeyListener#LEFT}, {@link KeyListener#RIGHT} keys<
+     *     /li>
+     *     <li>Exit the application on {@link KeyListener#EXIT} key</li>
+     *     <li>Toggle full screen on {@link KeyListener#FULL_SCREEN}</li>
      * </ul>
      */
     private class KeyListener extends java.awt.event.KeyAdapter
