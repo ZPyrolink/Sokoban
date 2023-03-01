@@ -25,7 +25,7 @@ public class GraphicLevel extends JComponent
 
     private static final String PLACEHOLDER = "%nb% moves";
 
-    private JLabel labelMoveNb;
+    private final JLabel labelMoveNb;
     private int moveNb;
     private void setMoveNb(int value)
     {
@@ -44,6 +44,7 @@ public class GraphicLevel extends JComponent
     public GraphicLevel()
     {
         super();
+
         addMouseListener(new MouseListener());
         addKeyListener(new KeyListener());
         setFocusable(true);

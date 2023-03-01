@@ -2,6 +2,7 @@ package GUI;
 
 import GameSystem.CaseContent;
 import GameSystem.Game;
+import GameSystem.Level;
 
 import javax.swing.*;
 
@@ -22,7 +23,7 @@ public class GraphicalInterface extends JFrame implements Runnable
     /**
      * Instantiate the interface.
      * <ul>
-     *     <li>Set the name with the {@link GameSystem.Level#name} of {@link Game#game}</li>
+     *     <li>Set the name with the {@link Level#getName()} of {@link Game#getGame()}</li>
      *     <li>Instantiate the {@link GraphicLevel}</li>
      *     <li>Use {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT} on {@link #setSize(int, int)} and disable resize</li>
      *     <li>{@link CaseContent#load()}</li>
@@ -36,6 +37,8 @@ public class GraphicalInterface extends JFrame implements Runnable
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setResizable(false);
+
+        setLocationRelativeTo(null);
 
         CaseContent.load();
     }
