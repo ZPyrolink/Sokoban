@@ -24,7 +24,7 @@ public class GraphicLevel extends JComponent
     /**
      * Default size of a case
      */
-    private static final int CASE_SIZE = 128 / 2;
+    private static final int CASE_SIZE = 128 / 3;
 
     private static final String PLACEHOLDER = "%nb% moves";
 
@@ -196,8 +196,9 @@ public class GraphicLevel extends JComponent
         if (!Game.getGame().getCurrentLevel().isFinished())
             return;
 
-        JOptionPane.showMessageDialog(this, "Level finished!", "Victory",
-                JOptionPane.INFORMATION_MESSAGE);
+        if (!Settings.isFullScreen())
+            JOptionPane.showMessageDialog(this, "Level finished!", "Victory",
+                    JOptionPane.INFORMATION_MESSAGE);
 
         nextLevel();
     }
@@ -217,8 +218,9 @@ public class GraphicLevel extends JComponent
         }
         else
         {
-            JOptionPane.showMessageDialog(this, "Game finished!", "VICTORY",
-                    JOptionPane.INFORMATION_MESSAGE);
+            if (!Settings.isFullScreen())
+                JOptionPane.showMessageDialog(this, "Game finished!", "VICTORY",
+                        JOptionPane.INFORMATION_MESSAGE);
             GuiUtils.getRoot(GraphicLevel.this).dispose();
         }
     }
