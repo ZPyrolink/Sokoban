@@ -12,9 +12,9 @@ import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 /**
  * Represent a GUI level
@@ -24,7 +24,13 @@ public class GraphicLevel extends JComponent
     /**
      * Default size of a case
      */
-    private static final int CASE_SIZE = 128 / 3;
+    private static final int CASE_SIZE = 128;
+    private int caseSizeFactorInverse = 2;
+
+    private int getCaseSize()
+    {
+        return CASE_SIZE / caseSizeFactorInverse;
+    }
 
     private static final String PLACEHOLDER = "%nb% moves";
 
@@ -62,14 +68,50 @@ public class GraphicLevel extends JComponent
         setMoveNb(0);
     }
 
+    private Dimension getLevelSize(int caseSizeFactorInverse)
+    {
+        return new Dimension(
+                Game.getGame().getCurrentLevel().getColumns() * (CASE_SIZE / caseSizeFactorInverse),
+                Game.getGame().getCurrentLevel().getLines() * (CASE_SIZE / caseSizeFactorInverse) + 20);
+    }
+
     /**
      * Set the size with the {@link Level#getColumns()} and {@link Level#getLines()} of {@link Game#getGame()}
      */
     private void setSize()
     {
-        GuiUtils.getRoot(this).setSize(
-                Game.getGame().getCurrentLevel().getColumns() * CASE_SIZE,
-                Game.getGame().getCurrentLevel().getLines() * CASE_SIZE + 20);
+        // GuiUtils.getRoot(this).setLocationRelativeTo(null);
+
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension next = getLevelSize(caseSizeFactorInverse);
+
+        interface Check
+        {
+            boolean check(Dimension n);
+        }
+
+        Check tooSmall = n -> screen.width < n.width || screen.height < n.height;
+
+        if (tooSmall.check(next))
+        {
+            while (tooSmall.check(next))
+            {
+                caseSizeFactorInverse++;
+                next = getLevelSize(caseSizeFactorInverse);
+            }
+        }
+        else
+        {
+            while (!tooSmall.check(getLevelSize(caseSizeFactorInverse - 1)) && caseSizeFactorInverse > 1)
+            {
+                caseSizeFactorInverse--;
+                next = getLevelSize(caseSizeFactorInverse);
+            }
+        }
+
+        Window root = GuiUtils.getRoot(this);
+        root.setSize(next);
+        root.setLocationRelativeTo(null);
     }
 
     @Override
@@ -87,15 +129,15 @@ public class GraphicLevel extends JComponent
         for (int l = 0; l < currentLevel.getLines(); l++)
             for (int c = 0; c < currentLevel.getColumns(); c++)
             {
-                drawable.drawImage(CaseContent.getGroundSprite(), c * CASE_SIZE, l * CASE_SIZE,
-                        CASE_SIZE, CASE_SIZE, null);
+                drawable.drawImage(CaseContent.getGroundSprite(), c * getCaseSize(), l * getCaseSize(),
+                        getCaseSize(), getCaseSize(), null);
 
                 CaseContent cc = currentLevel.getCase(l, c);
                 if (cc != null)
                 {
                     for (Image sprite : currentLevel.getCase(l, c).getSprites())
-                        drawable.drawImage(sprite, c * CASE_SIZE, l * CASE_SIZE,
-                                CASE_SIZE, CASE_SIZE, null);
+                        drawable.drawImage(sprite, c * getCaseSize(), l * getCaseSize(),
+                                getCaseSize(), getCaseSize(), null);
                 }
             }
     }
@@ -113,7 +155,7 @@ public class GraphicLevel extends JComponent
      */
     private Point getCaseClicked(MouseEvent event)
     {
-        return new Point(event.getX() / CASE_SIZE, event.getY() / CASE_SIZE);
+        return new Point(event.getX() / getCaseSize(), event.getY() / getCaseSize());
     }
 
     /**
