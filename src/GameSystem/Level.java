@@ -118,8 +118,8 @@ public class Level
     public boolean isFinished()
     {
         for (CaseContent[] aCase : cases)
-            for (CaseContent caseContent : aCase)
-                if (caseContent == CaseContent.Goal)
+            for (CaseContent cc : aCase)
+                if (CaseContent.haveGoal(cc) && !CaseContent.haveBox(cc))
                     return false;
 
         return true;
