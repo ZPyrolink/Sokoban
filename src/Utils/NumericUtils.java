@@ -3,6 +3,7 @@ package Utils;
 import lombok.experimental.UtilityClass;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Utility class for numeric values
@@ -60,5 +61,14 @@ public final class NumericUtils
     public static void translate(Point p1, Point p2)
     {
         p1.translate(p2.x, p2.y);
+    }
+
+    /**
+     * Copy an array into another
+     */
+    public static <T> void copy(T[][] array, T[][] result)
+    {
+        for (int i = 0; i < array.length; i++)
+            result[i] = Arrays.copyOf(array[i], array[i].length);
     }
 }

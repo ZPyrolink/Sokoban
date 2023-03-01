@@ -7,11 +7,14 @@ import Managers.Settings;
 import Utils.Direction;
 import Utils.GuiUtils;
 import Utils.NumericUtils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 /**
  * Represent a GUI level
@@ -27,6 +30,7 @@ public class GraphicLevel extends JComponent
 
     private final JLabel labelMoveNb;
     private int moveNb;
+
     private void setMoveNb(int value)
     {
         moveNb = value;
@@ -198,6 +202,9 @@ public class GraphicLevel extends JComponent
         nextLevel();
     }
 
+    /**
+     * Go to the next level
+     */
     private void nextLevel()
     {
         setMoveNb(0);
@@ -205,6 +212,7 @@ public class GraphicLevel extends JComponent
         if (Game.getGame().hasNext())
         {
             Game.getGame().next();
+            GuiUtils.<Frame>getRoot(this).setTitle(Game.getGame().getCurrentLevel().getName());
             repaint();
         }
         else
@@ -235,15 +243,60 @@ public class GraphicLevel extends JComponent
      * Key listener.
      * <ul>
      *     <li>
-     *         Move on {@link KeyListener#UP}, {@link KeyListener#DOWN},
-     *         {@link KeyListener#LEFT}, {@link KeyListener#RIGHT} keys<
+     *         Move on {@link Key#UP}, {@link Key#DOWN},
+     *         {@link Key#LEFT}, {@link Key#RIGHT} keys<
      *     /li>
-     *     <li>Exit the application on {@link KeyListener#EXIT} key</li>
-     *     <li>Toggle full screen on {@link KeyListener#FULL_SCREEN}</li>
+     *     <li>Exit the application on {@link Key#EXIT} key</li>
+     *     <li>Toggle full screen on {@link Key#FULL_SCREEN}</li>
      * </ul>
      */
     private class KeyListener extends java.awt.event.KeyAdapter
     {
+        @AllArgsConstructor
+        private enum Key
+        {
+            /**
+             * Key to move up
+             */
+            UP(KeyEvent.VK_UP),
+            /**
+             * Key to move down
+             */
+            DOWN(KeyEvent.VK_DOWN),
+            /**
+             * Key to move left
+             */
+            LEFT(KeyEvent.VK_LEFT),
+            /**
+             * Key to move right
+             */
+            RIGHT(KeyEvent.VK_RIGHT),
+
+            /**
+             * Key to exit the app
+             */
+            EXIT(KeyEvent.VK_Q),
+            /**
+             * Key to toggle full screen
+             */
+            FULL_SCREEN(KeyEvent.VK_ESCAPE),
+            /**
+             * Key to reset the level
+             */
+            RESET(KeyEvent.VK_R),
+
+            DEBUG1(KeyEvent.VK_F1);
+
+            @SuppressWarnings("NonFinalFieldInEnum")
+            @Getter
+            private int value;
+
+            public static Key of(int value)
+            {
+                return Arrays.stream(values()).filter(k -> k.value == value).findFirst().orElse(null);
+            }
+        }
+
         /**
          * Move the {@link CaseContent#Player} on a {@link Direction}
          */
@@ -257,36 +310,22 @@ public class GraphicLevel extends JComponent
             GraphicLevel.this.move(nextCase);
         }
 
-        /**
-         * Key to move up
-         */
-        private static final int UP = KeyEvent.VK_UP;
-        /**
-         * Key to move down
-         */
-        private static final int DOWN = KeyEvent.VK_DOWN;
-        /**
-         * Key to move left
-         */
-        private static final int LEFT = KeyEvent.VK_LEFT;
-        /**
-         * Key to move right
-         */
-        private static final int RIGHT = KeyEvent.VK_RIGHT;
-
-        /**
-         * Key to exit the app
-         */
-        private static final int EXIT = KeyEvent.VK_Q;
-        /**
-         * Key to toggle full screen
-         */
-        private static final int FULL_SCREEN = KeyEvent.VK_ESCAPE;
+        private void reset()
+        {
+            Game.getGame().getCurrentLevel().reset();
+            setMoveNb(0);
+            repaint();
+        }
 
         @Override
         public void keyPressed(KeyEvent e)
         {
-            switch (e.getKeyCode())
+            Key key = Key.of(e.getKeyCode());
+
+            if (key == null)
+                return;
+
+            switch (key)
             {
                 case UP -> move(Direction.Up);
                 case DOWN -> move(Direction.Down);
@@ -296,9 +335,10 @@ public class GraphicLevel extends JComponent
                 case EXIT -> GuiUtils.getRoot(GraphicLevel.this).dispose();
                 case FULL_SCREEN ->
                         Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
+                case RESET -> reset();
 
                 // Debug: remove on release
-                case KeyEvent.VK_F1 -> nextLevel();
+                case DEBUG1 -> nextLevel();
             }
         }
     }

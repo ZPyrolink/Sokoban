@@ -99,6 +99,8 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
             }
         }
 
+        currentLevel.save();
+
         return currentLevel;
     }
 
