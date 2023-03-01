@@ -27,8 +27,9 @@ public class GraphicLevel extends JComponent
 
     private JLabel labelMoveNb;
     private int moveNb;
-    private void updateLabelMoveNb()
+    private void setMoveNb(int value)
     {
+        moveNb = value;
         labelMoveNb.setText(PLACEHOLDER.replace("%nb%", String.valueOf(moveNb)));
         labelMoveNb.setSize(labelMoveNb.getPreferredSize());
     }
@@ -48,14 +49,12 @@ public class GraphicLevel extends JComponent
         setFocusable(true);
         requestFocus();
 
-        moveNb = 0;
-
         labelMoveNb = new JLabel();
         Font tmp = labelMoveNb.getFont();
         labelMoveNb.setFont(new Font(tmp.getName(), tmp.getStyle(), 20));
         add(labelMoveNb);
 
-        updateLabelMoveNb();
+        setMoveNb(0);
     }
 
     /**
@@ -178,8 +177,7 @@ public class GraphicLevel extends JComponent
 
         currentLevel.setCase(nextCase, next);
 
-        moveNb++;
-        updateLabelMoveNb();
+        setMoveNb(moveNb + 1);
 
         repaint();
         checkEnd();
@@ -195,6 +193,13 @@ public class GraphicLevel extends JComponent
 
         JOptionPane.showMessageDialog(this, "Level finished!", "Victory",
                 JOptionPane.INFORMATION_MESSAGE);
+
+        nextLevel();
+    }
+
+    private void nextLevel()
+    {
+        setMoveNb(0);
 
         if (Game.getGame().hasNext())
         {
@@ -290,6 +295,9 @@ public class GraphicLevel extends JComponent
                 case EXIT -> GuiUtils.getRoot(GraphicLevel.this).dispose();
                 case FULL_SCREEN ->
                         Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
+
+                // Debug: remove on release
+                case KeyEvent.VK_F1 -> nextLevel();
             }
         }
     }
