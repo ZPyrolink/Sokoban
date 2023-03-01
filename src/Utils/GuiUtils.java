@@ -39,4 +39,9 @@ public class GuiUtils
                 .getDefaultScreenDevice()
                 .setFullScreenWindow(window);
     }
+
+    public boolean tooSmall(Dimension container, Dimension content)
+    {
+        return container.width < content.width || container.height < content.height;
+    }
 }

@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.function.Predicate;
+
 
 /**
  * Represent a GUI level
@@ -80,21 +80,12 @@ public class GraphicLevel extends JComponent
      */
     private void setSize()
     {
-        // GuiUtils.getRoot(this).setLocationRelativeTo(null);
-
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension next = getLevelSize(caseSizeFactorInverse);
 
-        interface Check
+        if (GuiUtils.tooSmall(screen, next))
         {
-            boolean check(Dimension n);
-        }
-
-        Check tooSmall = n -> screen.width < n.width || screen.height < n.height;
-
-        if (tooSmall.check(next))
-        {
-            while (tooSmall.check(next))
+            while (GuiUtils.tooSmall(screen, next))
             {
                 caseSizeFactorInverse++;
                 next = getLevelSize(caseSizeFactorInverse);
@@ -102,7 +93,8 @@ public class GraphicLevel extends JComponent
         }
         else
         {
-            while (!tooSmall.check(getLevelSize(caseSizeFactorInverse - 1)) && caseSizeFactorInverse > 1)
+            while (!GuiUtils.tooSmall(screen,
+                    getLevelSize(caseSizeFactorInverse - 1)) && caseSizeFactorInverse > 1)
             {
                 caseSizeFactorInverse--;
                 next = getLevelSize(caseSizeFactorInverse);
