@@ -77,8 +77,6 @@ public class GraphicLevel extends JComponent
     {
         Graphics2D drawable = (Graphics2D) g;
 
-        setSize();
-
         int width = getSize().width;
         int height = getSize().height;
 
@@ -100,6 +98,14 @@ public class GraphicLevel extends JComponent
                                 CASE_SIZE, CASE_SIZE, null);
                 }
             }
+    }
+
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+
+        setSize();
     }
 
     /**
@@ -214,6 +220,7 @@ public class GraphicLevel extends JComponent
         {
             Game.getGame().next();
             GuiUtils.<Frame>getRoot(this).setTitle(Game.getGame().getCurrentLevel().getName());
+            setSize();
             repaint();
         }
         else
