@@ -44,7 +44,7 @@ public class Game implements Iterable<Level>, Iterator<Level>, Closeable
     @Override
     public boolean hasNext()
     {
-        return !_scanner.hasNext();
+        return _scanner.hasNext();
     }
 
     @Override
