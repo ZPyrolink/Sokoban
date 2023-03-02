@@ -157,6 +157,14 @@ public class GraphicLevel extends JComponent
     private boolean canMove(Point nextCase)
     {
         Level currentLevel = Game.getGame().getCurrentLevel();
+
+        if (nextCase.x < 0 || nextCase.x >= currentLevel.getColumns() ||
+                nextCase.y < 0 || nextCase.y >= currentLevel.getLines())
+            return false;
+
+        if (Settings.debugMode)
+            return true;
+
         Point player = currentLevel.getPlayerCo();
 
         if (player.equals(nextCase))
@@ -201,11 +209,29 @@ public class GraphicLevel extends JComponent
         if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
         {
             Direction d = Direction.of(player, nextCase);
-            Point box = nextCase.getLocation();
-            //noinspection ConstantConditions
-            box.translate(d.value.x, d.value.y);
+            if (d == null)
+                throw new RuntimeException();
 
-            currentLevel.setCase(box, currentLevel.getCase(box) == null ? CaseContent.Box : CaseContent.BoxOnGoal);
+            Point nextBox = nextCase.getLocation();
+            nextBox.translate(d.value.x, d.value.y);
+
+            if (Settings.debugMode)
+            {
+                Point tmp = nextBox.getLocation();
+
+                //noinspection StatementWithEmptyBody
+                for (; CaseContent.haveBox(currentLevel.getCase(tmp)); tmp.translate(d.value.x, d.value.y)) ;
+
+                for (; !tmp.equals(nextBox); tmp.translate(-d.value.x, -d.value.y))
+                {
+                    currentLevel.setCase(tmp, CaseContent.haveGoal(currentLevel.getCase(tmp)) ?
+                            CaseContent.BoxOnGoal : CaseContent.Box);
+                }
+            }
+
+            currentLevel.setCase(nextBox, CaseContent.haveGoal(currentLevel.getCase(nextBox)) ?
+                    CaseContent.BoxOnGoal : CaseContent.Box);
+
         }
 
         switch (currentLevel.getCase(player))
@@ -328,7 +354,8 @@ public class GraphicLevel extends JComponent
              */
             RESET(KeyEvent.VK_R),
 
-            DEBUG1(KeyEvent.VK_F1);
+            DEBUG1(KeyEvent.VK_F1),
+            DEBUG2(KeyEvent.VK_F2);
 
             @SuppressWarnings("NonFinalFieldInEnum")
             @Getter
@@ -382,6 +409,7 @@ public class GraphicLevel extends JComponent
 
                 // Debug: remove on release
                 case DEBUG1 -> nextLevel();
+                case DEBUG2 -> Settings.debugMode = !Settings.debugMode;
             }
         }
     }

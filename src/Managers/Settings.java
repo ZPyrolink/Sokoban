@@ -43,6 +43,8 @@ public class Settings
         window.setLocationRelativeTo(null);
     }
 
+    public boolean debugMode;
+
     /**
      * Flag enum representing the level of log
      */
