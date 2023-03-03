@@ -8,6 +8,7 @@ import Utils.Direction;
 import Utils.GuiUtils;
 import Utils.NumericUtils;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -319,10 +320,10 @@ public class GraphicLevel extends JComponent
      *     <li>Toggle full screen on {@link Key#FULL_SCREEN}</li>
      * </ul>
      */
-    private class KeyListener extends java.awt.event.KeyAdapter
+    public class KeyListener extends java.awt.event.KeyAdapter
     {
         @AllArgsConstructor
-        private enum Key
+        public enum Key
         {
             /**
              * Key to move up
@@ -364,6 +365,11 @@ public class GraphicLevel extends JComponent
             public static Key of(int value)
             {
                 return Arrays.stream(values()).filter(k -> k.value == value).findFirst().orElse(null);
+            }
+
+            public KeyStroke getKeyStroke(int modifiers)
+            {
+                return KeyStroke.getKeyStroke(value, modifiers, false);
             }
         }
 

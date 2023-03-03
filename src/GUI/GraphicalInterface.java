@@ -40,6 +40,8 @@ public class GraphicalInterface extends JFrame implements Runnable
 
         setLocationRelativeTo(null);
 
+        setJMenuBar(new GraphicalMenu());
+
         CaseContent.load();
     }
 
