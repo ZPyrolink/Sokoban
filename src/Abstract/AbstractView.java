@@ -8,4 +8,6 @@ public abstract class AbstractView<TModel extends AbstractModel>
     {
         this.model = model;
     }
+
+    protected abstract void render();
 }
