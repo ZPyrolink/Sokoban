@@ -166,6 +166,7 @@ public class LevelController extends AbstractController<Level, AbstractView<Leve
                 case DEBUG1 -> gl.nextLevel();
                 case DEBUG2 -> Settings.debugMode = !Settings.debugMode;
             }
+            e.consume();
         }
     }
 }

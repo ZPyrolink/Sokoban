@@ -4,6 +4,7 @@ import Controller.LevelController;
 import Model.CaseContent;
 import Model.Game;
 import Model.Level;
+import View.MenuView;
 
 import javax.swing.*;
 
@@ -43,7 +44,7 @@ public class GraphicalInterface extends JFrame implements Runnable
 
         setLocationRelativeTo(null);
 
-        setJMenuBar(new GraphicalMenu());
+        setJMenuBar(new MenuView());
 
         CaseContent.load();
     }
