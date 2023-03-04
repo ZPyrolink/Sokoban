@@ -1,4 +1,4 @@
-package View;
+package GUI;
 
 import Model.CaseContent;
 import Model.Game;
@@ -9,6 +9,7 @@ import javax.swing.*;
 /**
  * Represent the Sokoban Frame
  */
+@Deprecated(forRemoval = true)
 public class GraphicalInterface extends JFrame implements Runnable
 {
     /**

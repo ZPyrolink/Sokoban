@@ -1,4 +1,4 @@
-import View.GraphicalInterface;
+import GUI.GraphicalInterface;
 import Model.Game;
 import Managers.Resource;
 

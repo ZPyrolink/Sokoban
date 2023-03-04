@@ -1,4 +1,4 @@
-package View;
+package GUI;
 
 import Model.Game;
 import Managers.Settings;
@@ -7,6 +7,7 @@ import Utils.GuiUtils;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
+@Deprecated(forRemoval = true)
 public class GraphicalMenu extends JMenuBar
 {
     public GraphicalMenu()

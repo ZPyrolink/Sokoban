@@ -1,4 +1,4 @@
-package View;
+package GUI;
 
 import Model.CaseContent;
 import Model.Game;
@@ -19,6 +19,7 @@ import java.util.Arrays;
 /**
  * Represent a GUI level
  */
+@Deprecated(forRemoval = true)
 public class GraphicLevel extends JComponent
 {
     /**
