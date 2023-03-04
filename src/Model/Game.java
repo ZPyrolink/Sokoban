@@ -16,6 +16,7 @@ public class Game extends AbstractModel implements Iterable<Level>, Iterator<Lev
     /** Static instance of a game */
     @Getter
     @Setter
+    @Deprecated(forRemoval = true)
     private static Game game;
 
     /** Scanner reading a file game */
