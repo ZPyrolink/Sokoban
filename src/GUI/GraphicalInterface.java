@@ -1,5 +1,6 @@
 package GUI;
 
+import Controller.LevelController;
 import Model.CaseContent;
 import Model.Game;
 import Model.Level;
@@ -33,7 +34,8 @@ public class GraphicalInterface extends JFrame implements Runnable
     public GraphicalInterface()
     {
         super(Game.getGame().getCurrentLevel().getName());
-        add(new GraphicLevel());
+        LevelController lc = new LevelController(Game.getGame().getCurrentLevel());
+        add(lc.gl);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);

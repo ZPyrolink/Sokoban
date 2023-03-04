@@ -36,9 +36,9 @@ public class GraphicLevel extends JComponent
     private static final String PLACEHOLDER = "%nb% moves";
 
     private final JLabel labelMoveNb;
-    private int moveNb;
+    public int moveNb;
 
-    private void setMoveNb(int value)
+    public void setMoveNb(int value)
     {
         moveNb = value;
         labelMoveNb.setText(PLACEHOLDER.replace("%nb%", String.valueOf(moveNb)));
@@ -55,11 +55,6 @@ public class GraphicLevel extends JComponent
     public GraphicLevel()
     {
         super();
-
-        addMouseListener(new MouseListener());
-        addKeyListener(new KeyListener());
-        setFocusable(true);
-        requestFocus();
 
         labelMoveNb = new JLabel();
         Font tmp = labelMoveNb.getFont();
@@ -146,7 +141,7 @@ public class GraphicLevel extends JComponent
     /**
      * Get the case coordinates where a mouse event have occured
      */
-    private Point getCaseClicked(MouseEvent event)
+    public Point getCaseClicked(MouseEvent event)
     {
         return new Point(event.getX() / getCaseSize(), event.getY() / getCaseSize());
     }
@@ -156,7 +151,7 @@ public class GraphicLevel extends JComponent
     /**
      * Check if the {@link Level#isFinished()} and go to the next
      */
-    private void checkEnd()
+    public void checkEnd()
     {
         if (!Game.getGame().getCurrentLevel().isFinished())
             return;
@@ -171,7 +166,7 @@ public class GraphicLevel extends JComponent
     /**
      * Go to the next level
      */
-    private void nextLevel()
+    public void nextLevel()
     {
         setMoveNb(0);
 
@@ -188,141 +183,6 @@ public class GraphicLevel extends JComponent
                 JOptionPane.showMessageDialog(this, "Game finished!", "VICTORY",
                         JOptionPane.INFORMATION_MESSAGE);
             GuiUtils.getRoot(GraphicLevel.this).dispose();
-        }
-    }
-
-    /**
-     * Mouse listener to move player on click
-     */
-    private class MouseListener extends java.awt.event.MouseAdapter
-    {
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            Point nextCase = getCaseClicked(e);
-            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
-                return;
-
-            Game.getGame().getCurrentLevel().move(nextCase);
-            setMoveNb(moveNb + 1);
-
-            repaint();
-            checkEnd();
-        }
-    }
-
-    /**
-     * Key listener.
-     * <ul>
-     *     <li>
-     *         Move on {@link Key#UP}, {@link Key#DOWN},
-     *         {@link Key#LEFT}, {@link Key#RIGHT} keys<
-     *     /li>
-     *     <li>Exit the application on {@link Key#EXIT} key</li>
-     *     <li>Toggle full screen on {@link Key#FULL_SCREEN}</li>
-     * </ul>
-     */
-    public class KeyListener extends java.awt.event.KeyAdapter
-    {
-        @AllArgsConstructor
-        public enum Key
-        {
-            /**
-             * Key to move up
-             */
-            UP(KeyEvent.VK_UP),
-            /**
-             * Key to move down
-             */
-            DOWN(KeyEvent.VK_DOWN),
-            /**
-             * Key to move left
-             */
-            LEFT(KeyEvent.VK_LEFT),
-            /**
-             * Key to move right
-             */
-            RIGHT(KeyEvent.VK_RIGHT),
-
-            /**
-             * Key to exit the app
-             */
-            EXIT(KeyEvent.VK_Q),
-            /**
-             * Key to toggle full screen
-             */
-            FULL_SCREEN(KeyEvent.VK_ESCAPE),
-            /**
-             * Key to reset the level
-             */
-            RESET(KeyEvent.VK_R),
-
-            DEBUG1(KeyEvent.VK_F1),
-            DEBUG2(KeyEvent.VK_F2);
-
-            @SuppressWarnings("NonFinalFieldInEnum")
-            @Getter
-            private int value;
-
-            public static Key of(int value)
-            {
-                return Arrays.stream(values()).filter(k -> k.value == value).findFirst().orElse(null);
-            }
-
-            public KeyStroke getKeyStroke(int modifiers)
-            {
-                return KeyStroke.getKeyStroke(value, modifiers, false);
-            }
-        }
-
-        /**
-         * Move the {@link CaseContent#Player} on a {@link Direction}
-         */
-        private void move(Direction d)
-        {
-            Point nextCase = d.value.getLocation();
-            NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().getPlayerCo());
-            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
-                return;
-
-            Game.getGame().getCurrentLevel().move(nextCase);
-            setMoveNb(moveNb + 1);
-
-            repaint();
-            checkEnd();
-        }
-
-        private void reset()
-        {
-            Game.getGame().getCurrentLevel().reset();
-            setMoveNb(0);
-            repaint();
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e)
-        {
-            Key key = Key.of(e.getKeyCode());
-
-            if (key == null)
-                return;
-
-            switch (key)
-            {
-                case UP -> move(Direction.Up);
-                case DOWN -> move(Direction.Down);
-                case LEFT -> move(Direction.Left);
-                case RIGHT -> move(Direction.Right);
-
-                case EXIT -> GuiUtils.getRoot(GraphicLevel.this).dispose();
-                case FULL_SCREEN ->
-                        Settings.setFullScreen(GuiUtils.getRoot(GraphicLevel.this), !Settings.isFullScreen());
-                case RESET -> reset();
-
-                // Debug: remove on release
-                case DEBUG1 -> nextLevel();
-                case DEBUG2 -> Settings.debugMode = !Settings.debugMode;
-            }
         }
     }
 }

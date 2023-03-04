@@ -1,5 +1,6 @@
 package GUI;
 
+import Controller.LevelController;
 import Model.Game;
 import Managers.Settings;
 import Utils.GuiUtils;
@@ -16,7 +17,7 @@ public class GraphicalMenu extends JMenuBar
         {{
             add(new JMenuItem("Toggle full-screen")
             {{
-                setAccelerator(GraphicLevel.KeyListener.Key.FULL_SCREEN.getKeyStroke(0));
+                setAccelerator(LevelController.KeyListener.Key.FULL_SCREEN.getKeyStroke(0));
                 addActionListener(e ->
                 {
                     if (e.getModifiers() == KeyEvent.BUTTON1_MASK)
@@ -25,7 +26,7 @@ public class GraphicalMenu extends JMenuBar
             }});
             add(new JMenuItem("Exit")
             {{
-                setAccelerator(GraphicLevel.KeyListener.Key.EXIT.getKeyStroke(0));
+                setAccelerator(LevelController.KeyListener.Key.EXIT.getKeyStroke(0));
                 addActionListener(e ->
                 {
                     if (e.getModifiers() == KeyEvent.BUTTON1_MASK)
@@ -38,7 +39,7 @@ public class GraphicalMenu extends JMenuBar
         {{
             add(new JMenuItem("Reset")
             {{
-                setAccelerator(GraphicLevel.KeyListener.Key.RESET.getKeyStroke(0));
+                setAccelerator(LevelController.KeyListener.Key.RESET.getKeyStroke(0));
                 addActionListener(e ->
                 {
                     if (e.getModifiers() == KeyEvent.BUTTON1_MASK)
