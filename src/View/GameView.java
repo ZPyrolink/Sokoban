@@ -1,8 +1,6 @@
 package View;
 
 import Abstract.AbstractView;
-import Controller.LevelController;
-import GUI.GraphicLevel;
 import Model.CaseContent;
 import Model.Game;
 
@@ -18,7 +16,7 @@ public class GameView extends AbstractView<Game>
 
     private final JFrame frame;
 
-    public GameView(Game model, GraphicLevel gl)
+    public GameView(Game model)
     {
         super(model);
 
@@ -31,7 +29,11 @@ public class GameView extends AbstractView<Game>
             setLocationRelativeTo(null);
             setJMenuBar(new MenuView());
         }};
-        frame.add(gl);
+    }
+
+    public void add(Component comp)
+    {
+        frame.add(comp);
     }
 
     @Override

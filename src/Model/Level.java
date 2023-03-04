@@ -13,6 +13,8 @@ import java.awt.*;
  */
 public class Level extends AbstractModel
 {
+    //#region Variables
+
     /**
      * Name of the level
      */
@@ -23,6 +25,8 @@ public class Level extends AbstractModel
      * Current cases of the level
      */
     private final CaseContent[][] currentCases;
+
+    //#endregion
 
     /**
      * Create a new level
@@ -37,6 +41,8 @@ public class Level extends AbstractModel
         currentCases = new CaseContent[lines][columns];
         this.name = name;
     }
+
+    //#region Indexers
 
     /**
      * Number of lines of the level
@@ -123,6 +129,15 @@ public class Level extends AbstractModel
         return getCase(p.y, p.x);
     }
 
+    //#endregion
+
+    public Dimension getLevelSize(int caseSize)
+    {
+        return new Dimension(getColumns() * caseSize, getLines() * caseSize + 44);
+    }
+
+    //#region Save
+
     /**
      * Save the cases of the level
      */
@@ -139,6 +154,21 @@ public class Level extends AbstractModel
         NumericUtils.copy(cases, currentCases);
     }
 
+    //#endregion
+
+    /**
+     * Indicate if the level is finished (all {@link CaseContent#Box} on {@link CaseContent#Goal})
+     */
+    public boolean isFinished()
+    {
+        for (CaseContent[] aCase : currentCases)
+            for (CaseContent cc : aCase)
+                if (CaseContent.haveGoal(cc) && !CaseContent.haveBox(cc))
+                    return false;
+
+        return true;
+    }
+
     /**
      * Get the {@link CaseContent#Player} position. Warning: x is columns and y lines
      *
@@ -152,19 +182,6 @@ public class Level extends AbstractModel
                     return new Point(c, l);
 
         return null;
-    }
-
-    /**
-     * Indicate if the level is finished (all {@link CaseContent#Box} on {@link CaseContent#Goal})
-     */
-    public boolean isFinished()
-    {
-        for (CaseContent[] aCase : currentCases)
-            for (CaseContent cc : aCase)
-                if (CaseContent.haveGoal(cc) && !CaseContent.haveBox(cc))
-                    return false;
-
-        return true;
     }
 
     /**

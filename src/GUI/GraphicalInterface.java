@@ -34,19 +34,7 @@ public class GraphicalInterface extends JFrame implements Runnable
      */
     public GraphicalInterface()
     {
-        super(Game.getGame().getCurrentLevel().getName());
-        LevelController lc = new LevelController(Game.getGame().getCurrentLevel());
-        add(lc.gl);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        setResizable(false);
-
-        setLocationRelativeTo(null);
-
-        setJMenuBar(new MenuView());
-
-        CaseContent.load();
+        throw new UnsupportedOperationException();
     }
 
     @Override

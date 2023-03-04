@@ -18,6 +18,8 @@ public class GameController extends AbstractController<Game, GameView>
     @Override
     public GameView createView()
     {
-        return view = new GameView(model, levelController.gl);
+        view = new GameView(model);
+        view.add(levelController.createView().getComponent());
+        return view;
     }
 }

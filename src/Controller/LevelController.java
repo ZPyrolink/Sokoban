@@ -1,56 +1,109 @@
 package Controller;
 
 import Abstract.AbstractController;
-import Abstract.AbstractModel;
-import Abstract.AbstractView;
-import GUI.GraphicLevel;
 import Managers.Settings;
 import Model.CaseContent;
 import Model.Game;
 import Model.Level;
 import Utils.Direction;
-import Utils.GuiUtils;
 import Utils.NumericUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import View.LevelView;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 
-public class LevelController extends AbstractController<Level, AbstractView<Level>>
+public class LevelController extends AbstractController<Level, LevelView>
 {
-    public GraphicLevel gl;
-
     public LevelController(Level model)
     {
         super(model);
-        gl = new GraphicLevel();
-        gl.addMouseListener(new MouseListener());
-        gl.addKeyListener(new KeyListener());
-        gl.setFocusable(true);
-        gl.requestFocus();
     }
+
+    @Override
+    public LevelView createView()
+    {
+        view = new LevelView(model);
+        view.addMouseListener(new MouseListener());
+        view.addKeyListener(new KeyListener());
+        view.focus();
+        return view;
+    }
+
+    public void setLevel(Level l)
+    {
+        model = l;
+        view.setLevel(l);
+    }
+
+    //#region ToDo: move to the game controller
+
+    /**
+     * Check if the {@link Level#isFinished()} and go to the next
+     */
+    public void checkEnd()
+    {
+        if (!model.isFinished())
+            return;
+
+        if (!Settings.isFullScreen())
+            view.showMessage("Level finished!", "Victory");
+
+        nextLevel();
+    }
+
+    /**
+     * Go to the next level
+     */
+    public void nextLevel()
+    {
+        view.resetMoveNb();
+
+        if (Game.getGame().hasNext())
+        {
+            setLevel(Game.getGame().next());
+            view.setTitle(model.getName());
+            view.setSize();
+            view.render();
+        }
+        else
+        {
+            if (!Settings.isFullScreen())
+                view.showMessage("Game finished!", "VICTORY");
+
+            view.disposeRoot();
+        }
+    }
+
+    //#endregion
+
+    //#region Listeners
 
     /**
      * Mouse listener to move player on click
      */
     private class MouseListener extends java.awt.event.MouseAdapter
     {
+        /**
+         * Get the case coordinates where a mouse event have occured
+         */
+        private Point getCaseClicked(MouseEvent event)
+        {
+            return new Point(event.getX() / view.getCaseSize(), event.getY() / view.getCaseSize());
+        }
+
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            Point nextCase = gl.getCaseClicked(e);
-            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
+            Point nextCase = getCaseClicked(e);
+            if (!model.canMove(nextCase))
                 return;
 
-            Game.getGame().getCurrentLevel().move(nextCase);
-            gl.setMoveNb(gl.moveNb + 1);
+            model.move(nextCase);
+            view.incrementMoveNb();
 
-            gl.repaint();
-            gl.checkEnd();
+            view.render();
+            checkEnd();
         }
     }
 
@@ -58,94 +111,43 @@ public class LevelController extends AbstractController<Level, AbstractView<Leve
      * Key listener.
      * <ul>
      *     <li>
-     *         Move on {@link Key#UP}, {@link Key#DOWN},
-     *         {@link Key#LEFT}, {@link Key#RIGHT} keys<
+     *         Move on {@link Settings.Key#UP}, {@link Settings.Key#DOWN},
+     *         {@link Settings.Key#LEFT}, {@link Settings.Key#RIGHT} keys<
      *     /li>
-     *     <li>Exit the application on {@link Key#EXIT} key</li>
-     *     <li>Toggle full screen on {@link Key#FULL_SCREEN}</li>
+     *     <li>Exit the application on {@link Settings.Key#EXIT} key</li>
+     *     <li>Toggle full screen on {@link Settings.Key#FULL_SCREEN}</li>
      * </ul>
      */
     public class KeyListener extends java.awt.event.KeyAdapter
     {
-        @AllArgsConstructor
-        public enum Key
-        {
-            /**
-             * Key to move up
-             */
-            UP(KeyEvent.VK_UP),
-            /**
-             * Key to move down
-             */
-            DOWN(KeyEvent.VK_DOWN),
-            /**
-             * Key to move left
-             */
-            LEFT(KeyEvent.VK_LEFT),
-            /**
-             * Key to move right
-             */
-            RIGHT(KeyEvent.VK_RIGHT),
-
-            /**
-             * Key to exit the app
-             */
-            EXIT(KeyEvent.VK_Q),
-            /**
-             * Key to toggle full screen
-             */
-            FULL_SCREEN(KeyEvent.VK_ESCAPE),
-            /**
-             * Key to reset the level
-             */
-            RESET(KeyEvent.VK_R),
-
-            DEBUG1(KeyEvent.VK_F1),
-            DEBUG2(KeyEvent.VK_F2);
-
-            @SuppressWarnings("NonFinalFieldInEnum")
-            @Getter
-            private int value;
-
-            public static Key of(int value)
-            {
-                return Arrays.stream(values()).filter(k -> k.value == value).findFirst().orElse(null);
-            }
-
-            public KeyStroke getKeyStroke(int modifiers)
-            {
-                return KeyStroke.getKeyStroke(value, modifiers, false);
-            }
-        }
-
         /**
          * Move the {@link CaseContent#Player} on a {@link Direction}
          */
         private void move(Direction d)
         {
             Point nextCase = d.value.getLocation();
-            NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().getPlayerCo());
-            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
+            NumericUtils.translate(nextCase, model.getPlayerCo());
+            if (!model.canMove(nextCase))
                 return;
 
-            Game.getGame().getCurrentLevel().move(nextCase);
-            gl.setMoveNb(gl.moveNb + 1);
+            model.move(nextCase);
+            view.incrementMoveNb();
 
-            gl.repaint();
-            gl.checkEnd();
+            view.render();
+            checkEnd();
         }
 
         private void reset()
         {
-            Game.getGame().getCurrentLevel().reset();
-            gl.setMoveNb(0);
-            gl.repaint();
+            model.reset();
+            view.resetMoveNb();
+            view.render();
         }
 
         @Override
         public void keyPressed(KeyEvent e)
         {
-            Key key = Key.of(e.getKeyCode());
+            Settings.Key key = Settings.Key.of(e.getKeyCode());
 
             if (key == null)
                 return;
@@ -157,16 +159,17 @@ public class LevelController extends AbstractController<Level, AbstractView<Leve
                 case LEFT -> move(Direction.Left);
                 case RIGHT -> move(Direction.Right);
 
-                case EXIT -> GuiUtils.getRoot(gl).dispose();
-                case FULL_SCREEN ->
-                        Settings.setFullScreen(GuiUtils.getRoot(gl), !Settings.isFullScreen());
+                case EXIT -> view.disposeRoot();
+                case FULL_SCREEN -> view.toggleFullscreen();
                 case RESET -> reset();
 
                 // Debug: remove on release
-                case DEBUG1 -> gl.nextLevel();
+                case DEBUG1 -> nextLevel();
                 case DEBUG2 -> Settings.debugMode = !Settings.debugMode;
             }
             e.consume();
         }
     }
+
+    //#endregion
 }
