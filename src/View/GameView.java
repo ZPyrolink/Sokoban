@@ -2,6 +2,7 @@ package View;
 
 import Abstract.AbstractView;
 import Controller.LevelController;
+import GUI.GraphicLevel;
 import Model.CaseContent;
 import Model.Game;
 
@@ -15,14 +16,12 @@ public class GameView extends AbstractView<Game>
      */
     private static final Dimension DEFAULT_SIZE = new Dimension(1_000, 700);
 
-    private final LevelController lc;
     private final JFrame frame;
 
-    public GameView(Game model)
+    public GameView(Game model, GraphicLevel gl)
     {
         super(model);
 
-        lc = new LevelController(model.getCurrentLevel());
         frame = new JFrame(model.getCurrentLevel().getName())
         {{
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +31,7 @@ public class GameView extends AbstractView<Game>
             setLocationRelativeTo(null);
             setJMenuBar(new MenuView());
         }};
-        frame.add(lc.gl);
+        frame.add(gl);
     }
 
     @Override
