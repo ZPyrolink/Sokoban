@@ -1,8 +1,8 @@
-package GUI;
+package View;
 
-import GameSystem.CaseContent;
-import GameSystem.Game;
-import GameSystem.Level;
+import Model.CaseContent;
+import Model.Game;
+import Model.Level;
 
 import javax.swing.*;
 

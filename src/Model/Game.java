@@ -1,5 +1,6 @@
-package GameSystem;
+package Model;
 
+import Abstract.AbstractModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /** Represent a Sokoban game */
-public class Game implements Iterable<Level>, Iterator<Level>, Closeable
+public class Game extends AbstractModel implements Iterable<Level>, Iterator<Level>, Closeable
 {
     /** Static instance of a game */
     @Getter

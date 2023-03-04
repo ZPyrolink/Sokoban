@@ -1,5 +1,5 @@
-import GUI.GraphicalInterface;
-import GameSystem.Game;
+import View.GraphicalInterface;
+import Model.Game;
 import Managers.Resource;
 
 import javax.swing.*;

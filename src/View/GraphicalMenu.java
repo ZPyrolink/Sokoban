@@ -1,13 +1,11 @@
-package GUI;
+package View;
 
-import GameSystem.Game;
+import Model.Game;
 import Managers.Settings;
 import Utils.GuiUtils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 
 public class GraphicalMenu extends JMenuBar
 {

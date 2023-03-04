@@ -1,14 +1,13 @@
-package GUI;
+package View;
 
-import GameSystem.CaseContent;
-import GameSystem.Game;
-import GameSystem.Level;
+import Model.CaseContent;
+import Model.Game;
+import Model.Level;
 import Managers.Settings;
 import Utils.Direction;
 import Utils.GuiUtils;
 import Utils.NumericUtils;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -151,109 +150,7 @@ public class GraphicLevel extends JComponent
         return new Point(event.getX() / getCaseSize(), event.getY() / getCaseSize());
     }
 
-    /**
-     * Check if the {@link CaseContent#Player} can move on another case
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean canMove(Point nextCase)
-    {
-        Level currentLevel = Game.getGame().getCurrentLevel();
-
-        if (nextCase.x < 0 || nextCase.x >= currentLevel.getColumns() ||
-                nextCase.y < 0 || nextCase.y >= currentLevel.getLines())
-            return false;
-
-        if (Settings.debugMode)
-            return true;
-
-        Point player = currentLevel.getPlayerCo();
-
-        if (player.equals(nextCase))
-            return false;
-
-        if (!NumericUtils.singleAxisMoreLess(player, nextCase, 1))
-            return false;
-
-        CaseContent cc = currentLevel.getCase(nextCase);
-
-        if (cc == null)
-            return true;
-
-        switch (cc)
-        {
-            case Goal:
-                return true;
-            case Box:
-            case BoxOnGoal:
-                Direction d = Direction.of(player, nextCase);
-                Point box = nextCase.getLocation();
-                //noinspection ConstantConditions
-                box.translate(d.value.x, d.value.y);
-
-                cc = currentLevel.getCase(box);
-
-                return cc == null || cc == CaseContent.Goal;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Move the {@link CaseContent#Player} on the another case
-     */
-    private void move(Point nextCase)
-    {
-        Level currentLevel = Game.getGame().getCurrentLevel();
-        Point player = currentLevel.getPlayerCo();
-
-        if (CaseContent.haveBox(currentLevel.getCase(nextCase)))
-        {
-            Direction d = Direction.of(player, nextCase);
-            if (d == null)
-                throw new RuntimeException();
-
-            Point nextBox = nextCase.getLocation();
-            nextBox.translate(d.value.x, d.value.y);
-
-            if (Settings.debugMode)
-            {
-                Point tmp = nextBox.getLocation();
-
-                //noinspection StatementWithEmptyBody
-                for (; CaseContent.haveBox(currentLevel.getCase(tmp)); tmp.translate(d.value.x, d.value.y)) ;
-
-                for (; !tmp.equals(nextBox); tmp.translate(-d.value.x, -d.value.y))
-                {
-                    currentLevel.setCase(tmp, CaseContent.haveGoal(currentLevel.getCase(tmp)) ?
-                            CaseContent.BoxOnGoal : CaseContent.Box);
-                }
-            }
-
-            currentLevel.setCase(nextBox, CaseContent.haveGoal(currentLevel.getCase(nextBox)) ?
-                    CaseContent.BoxOnGoal : CaseContent.Box);
-
-        }
-
-        switch (currentLevel.getCase(player))
-        {
-            case Player -> currentLevel.clearCase(player);
-            case PlayerOnGoal -> currentLevel.setCase(player, CaseContent.Goal);
-        }
-
-        CaseContent cc = currentLevel.getCase(nextCase);
-        CaseContent next = CaseContent.Player;
-
-        if (CaseContent.haveGoal(cc))
-            next = CaseContent.PlayerOnGoal;
-
-        currentLevel.setCase(nextCase, next);
-
-        setMoveNb(moveNb + 1);
-
-        repaint();
-        checkEnd();
-    }
+    // ToDo: move to controllers
 
     /**
      * Check if the {@link Level#isFinished()} and go to the next
@@ -302,10 +199,14 @@ public class GraphicLevel extends JComponent
         public void mouseClicked(MouseEvent e)
         {
             Point nextCase = getCaseClicked(e);
-            if (!canMove(nextCase))
+            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
                 return;
 
-            move(nextCase);
+            Game.getGame().getCurrentLevel().move(nextCase);
+            setMoveNb(moveNb + 1);
+
+            repaint();
+            checkEnd();
         }
     }
 
@@ -380,10 +281,14 @@ public class GraphicLevel extends JComponent
         {
             Point nextCase = d.value.getLocation();
             NumericUtils.translate(nextCase, Game.getGame().getCurrentLevel().getPlayerCo());
-            if (!canMove(nextCase))
+            if (!Game.getGame().getCurrentLevel().canMove(nextCase))
                 return;
 
-            GraphicLevel.this.move(nextCase);
+            Game.getGame().getCurrentLevel().move(nextCase);
+            setMoveNb(moveNb + 1);
+
+            repaint();
+            checkEnd();
         }
 
         private void reset()

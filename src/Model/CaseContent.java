@@ -1,4 +1,4 @@
-package GameSystem;
+package Model;
 
 import Managers.Resource;
 import lombok.Getter;
