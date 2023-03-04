@@ -3,9 +3,11 @@ package View;
 import Abstract.AbstractView;
 import Model.CaseContent;
 import Model.Game;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class GameView extends AbstractView<Game>
 {
@@ -14,21 +16,24 @@ public class GameView extends AbstractView<Game>
      */
     private static final Dimension DEFAULT_SIZE = new Dimension(1_000, 700);
 
+    @Getter
     private final JFrame frame;
 
-    public GameView(Game model)
+    public GameView(Game model,
+                    ActionListener onFullScreen,
+                    ActionListener onExit,
+                    ActionListener onReset)
     {
         super(model);
 
-        frame = new JFrame(model.getCurrentLevel().getName())
-        {{
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(DEFAULT_SIZE);
-            setResizable(false);
+        frame = new JFrame(model.getCurrentLevel().getName());
 
-            setLocationRelativeTo(null);
-            setJMenuBar(new MenuView());
-        }};
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(DEFAULT_SIZE);
+        frame.setResizable(false);
+
+        frame.setLocationRelativeTo(null);
+        frame.setJMenuBar(new MenuView(onFullScreen, onExit, onReset));
     }
 
     public void add(Component comp)

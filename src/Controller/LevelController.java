@@ -137,13 +137,6 @@ public class LevelController extends AbstractController<Level, LevelView>
             checkEnd();
         }
 
-        private void reset()
-        {
-            model.reset();
-            view.resetMoveNb();
-            view.render();
-        }
-
         @Override
         public void keyPressed(KeyEvent e)
         {
@@ -169,6 +162,13 @@ public class LevelController extends AbstractController<Level, LevelView>
             }
             e.consume();
         }
+    }
+
+    public void reset()
+    {
+        model.reset();
+        view.resetMoveNb();
+        view.render();
     }
 
     //#endregion

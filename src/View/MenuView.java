@@ -5,22 +5,26 @@ import Model.Game;
 import Utils.GuiUtils;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 public class MenuView extends JMenuBar
 {
-    public MenuView()
+    public MenuView(
+            ActionListener onFullScreen,
+            ActionListener onExit,
+            ActionListener onReset)
     {
         add(new JMenu("Game")
         {{
             add(new JMenuItem("Toggle full-screen")
             {{
                 setAccelerator(Settings.Key.FULL_SCREEN.getKeyStroke(0));
-                addActionListener(e -> Settings.setFullScreen(GuiUtils.getRoot(MenuView.this), true));
+                addActionListener(onFullScreen);
             }});
             add(new JMenuItem("Exit")
             {{
                 setAccelerator(Settings.Key.EXIT.getKeyStroke(0));
-                addActionListener(e -> GuiUtils.getRoot(MenuView.this).dispose());
+                addActionListener(onExit);
             }});
         }});
 
@@ -29,7 +33,7 @@ public class MenuView extends JMenuBar
             add(new JMenuItem("Reset")
             {{
                 setAccelerator(Settings.Key.RESET.getKeyStroke(0));
-                addActionListener(e -> Game.getGame().getCurrentLevel().reset());
+                addActionListener(onReset);
             }});
         }});
     }
