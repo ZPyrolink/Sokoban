@@ -7,6 +7,7 @@ import Model.Level;
 import Utils.Direction;
 import Utils.GuiUtils;
 import Utils.NumericUtils;
+import View.AbstractLevelView;
 import View.LevelView;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class LevelController extends AbstractController<Level, LevelView>
+public class LevelController extends AbstractController<Level, AbstractLevelView>
 {
     private final ActionListener nextLevel;
 
@@ -25,25 +26,16 @@ public class LevelController extends AbstractController<Level, LevelView>
     }
 
     @Override
-    public LevelView createView()
+    public AbstractLevelView createView()
     {
-        view = new LevelView(model, new MouseListener(), new KeyListener());
-        view.focus();
-        return view;
+        return view = new LevelView(model, new MouseListener(), new KeyListener());
     }
 
     public void setLevel(Level l)
     {
         model = l;
         view.setLevel(l);
-
-        view.resetMoveNb();
-        view.setTitle(model.getName());
-        view.setSize();
-        view.render();
     }
-
-    //#region ToDo: move to the game controller
 
     /**
      * Check if the {@link Level#isFinished()} and go to the next

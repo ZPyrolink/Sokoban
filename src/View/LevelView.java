@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
-public class LevelView extends AbstractView<Level>
+public class LevelView extends AbstractLevelView
 {
     //#region Case size
 
@@ -22,6 +22,7 @@ public class LevelView extends AbstractView<Level>
     private static final int CASE_SIZE = 128;
     private int caseSizeFactorInverse = 2;
 
+    @Override
     public int getCaseSize()
     {
         return CASE_SIZE / caseSizeFactorInverse;
@@ -117,9 +118,15 @@ public class LevelView extends AbstractView<Level>
 
     //#endregion
 
+    @Override
     public void setLevel(Level l)
     {
-        model = l;
+        super.setLevel(l);
+
+        resetMoveNb();
+        setTitle(model.getName());
+        setSize();
+        render();
     }
 
     public LevelView(Level model, MouseListener ml, KeyListener kl)
@@ -133,6 +140,7 @@ public class LevelView extends AbstractView<Level>
         component = new Component();
         component.addMouseListener(ml);
         component.addKeyListener(kl);
+        focus();
     }
 
     @Override
@@ -154,11 +162,13 @@ public class LevelView extends AbstractView<Level>
 
     private int moveNb;
 
+    @Override
     public void incrementMoveNb()
     {
         setMoveNb(moveNb + 1);
     }
 
+    @Override
     public void resetMoveNb()
     {
         setMoveNb(0);
@@ -173,23 +183,26 @@ public class LevelView extends AbstractView<Level>
 
     //#endregion
 
+    @Override
     public void showMessage(String message, String title)
     {
         JOptionPane.showMessageDialog(component, message, title,
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    @Override
     public void disposeRoot()
     {
         GuiUtils.getRoot(component).dispose();
     }
 
-    public void focus()
+    private void focus()
     {
         component.setFocusable(true);
         component.requestFocus();
     }
 
+    @Override
     public void toggleFullscreen()
     {
         Settings.setFullScreen(GuiUtils.getRoot(component), !Settings.isFullScreen());

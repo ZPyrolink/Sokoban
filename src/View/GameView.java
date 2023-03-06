@@ -22,7 +22,8 @@ public class GameView extends AbstractView<Game>
     public GameView(Game model,
                     ActionListener onFullScreen,
                     ActionListener onExit,
-                    ActionListener onReset)
+                    ActionListener onReset,
+                    LevelView lv)
     {
         super(model);
 
@@ -34,11 +35,8 @@ public class GameView extends AbstractView<Game>
 
         frame.setLocationRelativeTo(null);
         frame.setJMenuBar(new MenuView(onFullScreen, onExit, onReset));
-    }
 
-    public void add(Component comp)
-    {
-        frame.add(comp);
+        frame.add(lv.getComponent());
     }
 
     @Override

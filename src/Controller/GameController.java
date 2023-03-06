@@ -4,6 +4,7 @@ import Abstract.AbstractController;
 import Managers.Settings;
 import Model.Game;
 import View.GameView;
+import View.LevelView;
 
 import javax.swing.*;
 
@@ -24,8 +25,8 @@ public class GameController extends AbstractController<Game, GameView>
         view = new GameView(model,
                 e -> Settings.setFullScreen(view.getFrame(), true),
                 e -> view.getFrame().dispose(),
-                e -> levelController.reset());
-        view.add(levelController.createView().getComponent());
+                e -> levelController.reset(),
+                ((LevelView) levelController.createView()));
         return view;
     }
 
