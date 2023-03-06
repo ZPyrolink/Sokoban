@@ -12,8 +12,6 @@ public class Sokoban
         Game g = new Game(Resource.Game.open(levelsName));
         g.next();
 
-        Game.setGame(g);
-
         GameController gc = new GameController(g);
         SwingUtilities.invokeLater(() -> gc.createView().render());
     }
