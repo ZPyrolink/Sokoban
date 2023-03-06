@@ -122,7 +122,7 @@ public class LevelView extends AbstractView<Level>
         model = l;
     }
 
-    public LevelView(Level model)
+    public LevelView(Level model, MouseListener ml, KeyListener kl)
     {
         super(model);
 
@@ -131,6 +131,8 @@ public class LevelView extends AbstractView<Level>
         moveNbLabel.setFont(new Font(tmp.getName(), tmp.getStyle(), 20));
 
         component = new Component();
+        component.addMouseListener(ml);
+        component.addKeyListener(kl);
     }
 
     @Override
@@ -192,18 +194,4 @@ public class LevelView extends AbstractView<Level>
     {
         Settings.setFullScreen(GuiUtils.getRoot(component), !Settings.isFullScreen());
     }
-
-    //#region Listeners
-
-    public void addMouseListener(MouseListener listener)
-    {
-        component.addMouseListener(listener);
-    }
-
-    public void addKeyListener(KeyListener listener)
-    {
-        component.addKeyListener(listener);
-    }
-
-    //#endregion
 }

@@ -27,9 +27,7 @@ public class LevelController extends AbstractController<Level, LevelView>
     @Override
     public LevelView createView()
     {
-        view = new LevelView(model);
-        view.addMouseListener(new MouseListener());
-        view.addKeyListener(new KeyListener());
+        view = new LevelView(model, new MouseListener(), new KeyListener());
         view.focus();
         return view;
     }
