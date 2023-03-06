@@ -1,6 +1,6 @@
 package Managers;
 
-import GameSystem.Game;
+import Model.Game;
 import lombok.AllArgsConstructor;
 
 import javax.imageio.ImageIO;

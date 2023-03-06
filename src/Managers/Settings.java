@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +47,57 @@ public class Settings
     }
 
     public boolean debugMode;
+
+    @AllArgsConstructor
+    public enum Key
+    {
+        /**
+         * Key to move up
+         */
+        UP(KeyEvent.VK_UP),
+        /**
+         * Key to move down
+         */
+        DOWN(KeyEvent.VK_DOWN),
+        /**
+         * Key to move left
+         */
+        LEFT(KeyEvent.VK_LEFT),
+        /**
+         * Key to move right
+         */
+        RIGHT(KeyEvent.VK_RIGHT),
+
+        /**
+         * Key to exit the app
+         */
+        EXIT(KeyEvent.VK_Q),
+        /**
+         * Key to toggle full screen
+         */
+        FULL_SCREEN(KeyEvent.VK_ESCAPE),
+        /**
+         * Key to reset the level
+         */
+        RESET(KeyEvent.VK_R),
+
+        DEBUG1(KeyEvent.VK_F1),
+        DEBUG2(KeyEvent.VK_F2);
+
+        @SuppressWarnings("NonFinalFieldInEnum")
+        @Getter
+        private int value;
+
+        public static Key of(int value)
+        {
+            return Arrays.stream(values()).filter(k -> k.value == value).findFirst().orElse(null);
+        }
+
+        public KeyStroke getKeyStroke(int modifiers)
+        {
+            return KeyStroke.getKeyStroke(value, modifiers, false);
+        }
+    }
 
     /**
      * Flag enum representing the level of log
