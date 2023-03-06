@@ -103,7 +103,7 @@ public class LevelView extends AbstractLevelView
         else
         {
             while (!GuiUtils.tooSmall(screen,
-                    model.getLevelSize(getCaseSize(caseSizeFactorInverse - 1))) && caseSizeFactorInverse > 1)
+                    model.getLevelSize(getCaseSize(caseSizeFactorInverse - 1))) && caseSizeFactorInverse > 2)
             {
                 caseSizeFactorInverse--;
                 next = model.getLevelSize(getCaseSize());
