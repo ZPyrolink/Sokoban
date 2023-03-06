@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * Class utility for swing GUI
@@ -43,5 +44,10 @@ public class GuiUtils
     public boolean tooSmall(Dimension container, Dimension content)
     {
         return container.width < content.width || container.height < content.height;
+    }
+
+    public ActionEvent emptyEvent(Object source)
+    {
+        return new ActionEvent(source, 0, null);
     }
 }

@@ -3,21 +3,25 @@ package Controller;
 import Abstract.AbstractController;
 import Managers.Settings;
 import Model.CaseContent;
-import Model.Game;
 import Model.Level;
 import Utils.Direction;
+import Utils.GuiUtils;
 import Utils.NumericUtils;
 import View.LevelView;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class LevelController extends AbstractController<Level, LevelView>
 {
-    public LevelController(Level model)
+    private final ActionListener nextLevel;
+
+    public LevelController(Level model, ActionListener nextLevel)
     {
         super(model);
+        this.nextLevel = nextLevel;
     }
 
     @Override
@@ -34,6 +38,11 @@ public class LevelController extends AbstractController<Level, LevelView>
     {
         model = l;
         view.setLevel(l);
+
+        view.resetMoveNb();
+        view.setTitle(model.getName());
+        view.setSize();
+        view.render();
     }
 
     //#region ToDo: move to the game controller
@@ -49,30 +58,7 @@ public class LevelController extends AbstractController<Level, LevelView>
         if (!Settings.isFullScreen())
             view.showMessage("Level finished!", "Victory");
 
-        nextLevel();
-    }
-
-    /**
-     * Go to the next level
-     */
-    public void nextLevel()
-    {
-        view.resetMoveNb();
-
-        if (Game.getGame().hasNext())
-        {
-            setLevel(Game.getGame().next());
-            view.setTitle(model.getName());
-            view.setSize();
-            view.render();
-        }
-        else
-        {
-            if (!Settings.isFullScreen())
-                view.showMessage("Game finished!", "VICTORY");
-
-            view.disposeRoot();
-        }
+        nextLevel.actionPerformed(GuiUtils.emptyEvent(this));
     }
 
     //#endregion
@@ -157,7 +143,7 @@ public class LevelController extends AbstractController<Level, LevelView>
                 case RESET -> reset();
 
                 // Debug: remove on release
-                case DEBUG1 -> nextLevel();
+                case DEBUG1 -> nextLevel.actionPerformed(GuiUtils.emptyEvent(this));
                 case DEBUG2 -> Settings.debugMode = !Settings.debugMode;
             }
             e.consume();
