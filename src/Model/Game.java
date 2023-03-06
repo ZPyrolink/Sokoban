@@ -13,12 +13,6 @@ import java.util.Scanner;
 /** Represent a Sokoban game */
 public class Game extends AbstractModel implements Iterable<Level>, Iterator<Level>, Closeable
 {
-    /** Static instance of a game */
-    @Getter
-    @Setter
-    @Deprecated(forRemoval = true)
-    private static Game game;
-
     /** Scanner reading a file game */
     private final Scanner _scanner;
     /** Current level */

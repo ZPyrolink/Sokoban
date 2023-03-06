@@ -1,6 +1,5 @@
 package View;
 
-import Abstract.AbstractView;
 import Managers.Settings;
 import Model.CaseContent;
 import Model.Level;

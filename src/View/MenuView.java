@@ -1,8 +1,6 @@
 package View;
 
 import Managers.Settings;
-import Model.Game;
-import Utils.GuiUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

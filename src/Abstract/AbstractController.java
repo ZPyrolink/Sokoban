@@ -1,7 +1,5 @@
 package Abstract;
 
-import Model.Game;
-
 public abstract class AbstractController<TModel extends AbstractModel, TView extends AbstractView<TModel>>
 {
     protected TModel model;
